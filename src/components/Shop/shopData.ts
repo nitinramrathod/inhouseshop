@@ -1,19 +1,22 @@
 import { Product } from "@/types/product";
 const shopData: Product[] = [
   {
-    title: "Havit HV-G69 USB Gamepad",
+    title: "Dell 5420 I5 11th generation",
     reviews: 15,
-    price: 59.0,
-    discountedPrice: 29.0,
+    price: 27000,
+    discountedPrice: 22000,
     id: 1,
+    description:'Description of the product',
+    inStock: true,
+    rating: 4,
     imgs: {
       thumbnails: [
-        "/images/products/product-1-sm-1.png",
-        "/images/products/product-1-sm-2.png",
+        "/images/products/Dell-5420-I5-11th.jpeg",
+        "/images/products/Dell-5420-I5-11th.jpeg",
       ],
       previews: [
-        "/images/products/product-1-bg-1.png",
-        "/images/products/product-1-bg-2.png",
+        "/images/products/Dell-5420-I5-11th.jpeg",
+        "/images/products/Dell-5420-I5-11th.jpeg",
       ],
     },
   },
