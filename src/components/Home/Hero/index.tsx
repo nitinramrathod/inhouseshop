@@ -49,7 +49,7 @@ const Hero = () => {
 
                   <div>
                     <Image
-                      src="/images/hero/hero-02.png"
+                      src="/images/hero/laptops.png"
                       alt="mobile image"
                       width={123}
                       height={161}
@@ -81,7 +81,7 @@ const Hero = () => {
 
                   <div>
                     <Image
-                      src="/images/hero/hero-01.png"
+                      src="/images/hero/side-hero-2.png"
                       alt="mobile image"
                       width={123}
                       height={161}
