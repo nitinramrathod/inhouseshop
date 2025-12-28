@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import CustomSelect from "./CustomSelect";
 import { menuData } from "./menuData";
@@ -13,28 +13,55 @@ import Image from "next/image";
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [navigationOpen, setNavigationOpen] = useState(false);
-  const [stickyMenu, setStickyMenu] = useState(false);
-  const { openCartModal } = useCartModalContext();
+  // const [stickyMenu, setStickyMenu] = useState(false);
+  // const [scrollingDown, setScrollingDown] = useState(false);
+  // const { openCartModal } = useCartModalContext();
 
+  // const product = useAppSelector((state) => state.cartReducer.items);
+  // const totalPrice = useSelector(selectTotalPrice);
+
+   const [stickyMenu, setStickyMenu] = useState(false);
+  const [scrollingDown, setScrollingDown] = useState(false);
+
+  const prevScrollY = useRef(0);
+  const ticking = useRef(false);
+
+  const { openCartModal } = useCartModalContext();
   const product = useAppSelector((state) => state.cartReducer.items);
   const totalPrice = useSelector(selectTotalPrice);
 
-  const handleOpenCartModal = () => {
-    openCartModal();
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+
+    // Sticky logic
+    setStickyMenu(currentScrollY >= 80);
+
+    // Scroll direction logic
+    if (currentScrollY > prevScrollY.current && !scrollingDown) {
+      setScrollingDown(true); // scrolling down
+    } else if (currentScrollY < prevScrollY.current && scrollingDown) {
+      setScrollingDown(false); // scrolling up
+    }
+
+    prevScrollY.current = currentScrollY;
+    ticking.current = false;
   };
 
-  // Sticky menu
-  const handleStickyMenu = () => {
-    if (window.scrollY >= 80) {
-      setStickyMenu(true);
-    } else {
-      setStickyMenu(false);
+  const onScroll = () => {
+    if (!ticking.current) {
+      window.requestAnimationFrame(handleScroll);
+      ticking.current = true;
     }
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleStickyMenu);
-  });
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [scrollingDown]);
+
+  const handleOpenCartModal = () => {
+    openCartModal();
+  };
 
   const options = [
     { label: "All Categories", value: "0" },
@@ -49,15 +76,15 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed left-0 top-0 w-full z-9999 bg-white transition-all ease-in-out duration-300 ${
+      className={`fixed bg-white left-0 top-0 w-full z-9999  transition-all ease-in-out duration-300 ${
         stickyMenu && "shadow"
       }`}
     >
-      <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0">
+      <div className="z-5 max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0">
         {/* <!-- header top start --> */}
         <div
           className={`flex flex-col lg:flex-row gap-5 items-end lg:items-center xl:justify-between ease-out duration-200 ${
-            stickyMenu ? "py-4" : "py-6"
+            stickyMenu ? "py-3" : "py-6"
           }`}
         >
           {/* <!-- header top left --> */}
@@ -289,9 +316,10 @@ const Header = () => {
         {/* <!-- header top end --> */}
       </div>
 
-      <div className="border-t border-gray-3">
+      <div className={`z-3  border-t border-gray-3 w-full bg-white transition-all duration-700 ease-in bg-green-500 ${scrollingDown && stickyMenu ? 'top-[0]': 'top-[93px]'}`}>
+        
         <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0">
-          <div className="flex items-center justify-between">
+          <div className={`flex items-center justify-between `}>
             {/* <!--=== Main Nav Start ===--> */}
             <div
               className={`w-[288px] absolute right-4 top-full xl:static xl:w-auto h-0 xl:h-auto invisible xl:visible xl:flex items-center justify-between ${
@@ -334,7 +362,7 @@ const Header = () => {
             {/* // <!--=== Nav Right Start ===--> */}
             <div className="hidden xl:block">
               <ul className="flex items-center gap-5.5">
-                <li className="py-4">
+                {/* <li className="py-4">
                   <a
                     href="#"
                     className="flex items-center gap-1.5 font-medium text-custom-sm text-dark hover:text-blue"
@@ -358,7 +386,7 @@ const Header = () => {
                     </svg>
                     Recently Viewed
                   </a>
-                </li>
+                </li> */}
 
                 <li className="py-4">
                   <Link
