@@ -1,5 +1,6 @@
 export type Product = {
   title: string;
+  name?: string;
   description?: string;
   inStock?: boolean;
   rating?: number;
@@ -8,6 +9,7 @@ export type Product = {
   price: number;
   discountedPrice: number;
   id: number;
+  images?: string[];
   imgs?: {
     thumbnails: string[];
     previews: string[];

@@ -1,5 +1,6 @@
 import Home from "@/components/Home";
 import { Metadata } from "next";
+// export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "NextCommerce | Nextjs E-commerce template",
@@ -7,10 +8,28 @@ export const metadata: Metadata = {
   // other metadata
 };
 
-export default function HomePage() {
+async function getProducts(searchParams:any) {
+
+  // const query = new URLSearchParams(searchParams).toString();
+  const query = ''
+
+  const res = await fetch(`${process.env.BACKEND_URL}/api/v1/products?${query}`, {
+    cache: "no-store"
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch products");
+  return res.json();
+}
+
+export default async function HomePage({ searchParams }: any) {
+    const products = await getProducts(searchParams);
+
+    console.log("product==>",products)
+  
+
   return (
     <>
-      <Home />
+      <Home products={products} />
     </>
   );
 }
