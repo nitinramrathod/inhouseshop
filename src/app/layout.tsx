@@ -1,3 +1,4 @@
+import { ReactQueryProvider } from "@/utils/providers/ReactQueryProvider";
 import "./css/euclid-circular-a-font.css";
 import "./css/style.css";
 
@@ -9,7 +10,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <ReactQueryProvider>
+          {children}
+        </ReactQueryProvider>
       </body>
     </html>
   );

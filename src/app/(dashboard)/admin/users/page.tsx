@@ -1,3 +1,4 @@
+import UserList from "@/views/UserList";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const UsersPage = () => {
-  return <h1>Users</h1>;
+  return <UserList/>;
 };
 
 export default UsersPage;

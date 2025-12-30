@@ -1,3 +1,4 @@
+import ReviewList from "@/views/ReviewList";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const ReviewsPage = () => {
-  return <h1>Reviews</h1>;
+  return <ReviewList/>;
 };
 
 export default ReviewsPage;

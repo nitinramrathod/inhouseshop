@@ -1,3 +1,4 @@
+import OrderList from "@/views/OrderList";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const CreateProduct = () => {
-  return (<h1>Order</h1>)
+  return <OrderList></OrderList>
 }
 
 export default CreateProduct
