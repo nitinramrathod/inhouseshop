@@ -3,7 +3,7 @@ import { getSession } from 'next-auth/react'
 
 // Create admin-specific axios instance (no x-org-id header)
 export const protectedAxios = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_BACKEND_API,
+    baseURL: process.env.NEXT_PUBLIC_BACKEND_API || 'https://inhouseshop.up.railway.app',
 })
 
 // Interceptor for admin routes - only adds Authorization, NO x-org-id

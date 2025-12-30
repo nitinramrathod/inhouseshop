@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 // import { Metadata } from "next";
 import Button from "@/components/dashboard/forms/Button";
 import { useRouter } from "next/navigation";
+import { useGetProducts } from "@/utils/hooks/product";
 // export const metadata: Metadata = {
 //   title: "Products List | In House Shop",
 //   description: "Products list page.",
@@ -24,8 +25,10 @@ export interface Product {
 
 const BlogGridPage = () => {
     const router = useRouter();
-    const [products, setProducts] = useState([])
-
+    const [products, setProducts] = useState([]);
+    const {data} = useGetProducts();
+    
+    console.log("data===>", data);
 
     const fetchData = async () => {
         const res = await fetch(`${backendURL}/products`, {
