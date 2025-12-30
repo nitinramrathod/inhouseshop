@@ -7,6 +7,7 @@ import { LaptopSpecs } from "@/types/product";
 import { Pencil, Trash } from "lucide-react";
 import PageHeader from "@/components/dashboard/table/PageHeader";
 import RowLoader from "@/components/dashboard/table/RowLoader";
+import { useReviews } from "@/utils/hooks/review";
 
 const backendURL = 'http://localhost:3001'
 
@@ -84,10 +85,9 @@ export const NameDescriptionCell = ({
 };
 
 
-const ReviewList = () => {
+const ReviewList = ({productId}:{productId:string}) => {
     const router = useRouter();
-    const { data, loading, refetch } = useGetProducts();
-
+    const { data, isPending, refetch } = useReviews(productId);
 
     const goToEdit = (id) => {
         router.push(`/admin/products/${id}`)
@@ -105,34 +105,28 @@ const ReviewList = () => {
         }
     }
 
-    const HEADERS = ['Name', 'Image', 'Specifications', 'Price', 'SKU', 'Stock', 'Action'];
+    const HEADERS = ['Product', 'Rating', 'Comment', 'Name', 'Created At', 'Action'];
 
     return (
 
         <div className="mx-auto px-4">
-            <PageHeader href="/admin/reviews/create" title="Review List" buttonText="Add Review" />
+            <PageHeader href="/admin/reviews/create" backTo={'/admin/products'} title="Review List" buttonText="Add Review" />
             <div className="overflow-x-auto">
                 <DataTable headers={HEADERS}>
-                    {loading ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.data?.map(item => {
+                    {isPending ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.data?.map(item => {
                         return (
                             <tr key={item._id}>
-                                <td><NameDescriptionCell name={item.name} description={item.description} /></td>
-                                <td><img width="100" height='100' src={item?.images[0]} alt={item.name} /></td>
-                                <td><SpecsCell specs={item.specifications} /></td>
-                                <td>
-                                    <div>
-                                        <p>Price: {item.price || '--'}</p>
-                                        <p>Discount Price: {item.discountPrice || '--'}</p>
-                                    </div>
-                                </td>
-                                <td>{item.sku || '--'}</td>
-                                <td>{item.stock || '--'}</td>
-                                <td>
+                                <td className="px-2">{item.product}</td>
+                                <td className="px-2">{item.rating}</td>
+                                <td className="px-2">{item.comment}</td>
+                                <td className="px-2">{item.user.firstName} {item.user.firstName}</td>
+                                <td className="px-2">{item.createdAt}</td>                          
+                                <td className="px-2">
                                     <div className="flex px-4 py-3 gap-3 items-center mt-3">
                                         <Button onClick={() => goToEdit(item?._id)} className="!px-2"><Pencil size={'1rem'} /></Button>
                                         <Button className="!px-2" onClick={() => handleDelete(item._id)}><Trash size={'1rem'} /></Button>
                                     </div>
-                                </td>
+                                </td> 
                             </tr>
                         )
                     })}

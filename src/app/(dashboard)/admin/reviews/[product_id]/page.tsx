@@ -6,8 +6,9 @@ export const metadata: Metadata = {
   description: "Manage product reviews",
 };
 
-const ReviewsPage = () => {
-  return <ReviewList/>;
+const ReviewsPage = async({params}) => {
+  const {product_id} = await params;
+  return <ReviewList productId={product_id}/>;
 };
 
 export default ReviewsPage;

@@ -47,7 +47,7 @@ class ReviewService {
     params?: ReviewQueryParams
   ) {
     const res = await protectedAxios.get(
-      `/api/v1/products/${productId}/reviews`,
+      `/api/v1/reviews/product/${productId}`,
       { params }
     )
     return res.data
