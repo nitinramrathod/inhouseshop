@@ -7,6 +7,7 @@ import { LaptopSpecs } from "@/types/product";
 import { Pencil, Trash } from "lucide-react";
 import PageHeader from "@/components/dashboard/table/PageHeader";
 import RowLoader from "@/components/dashboard/table/RowLoader";
+import { useUsers } from "@/utils/hooks/user";
 
 const backendURL = 'http://localhost:3001'
 
@@ -86,8 +87,10 @@ export const NameDescriptionCell = ({
 
 const UserList = () => {
     const router = useRouter();
-    const { data, loading, refetch } = useGetProducts();
+    const { data, refetch } = useUsers();
+    const loading = true;
 
+    console.log('data==>', data);
 
     const goToEdit = (id) => {
         router.push(`/admin/products/${id}`)

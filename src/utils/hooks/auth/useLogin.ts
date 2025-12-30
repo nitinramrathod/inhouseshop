@@ -8,9 +8,10 @@ export const useLogin = () => {
     mutationFn: (payload: LoginPayload) =>
       authService.login(payload),
 
-    onSuccess: (data) => {
-      // Store user in cache
+    onSuccess: (data:any) => {
       queryClient.setQueryData(['auth-user'], data.data)
+      localStorage.setItem("access_token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
     },
 
     onError: (error: any) => {

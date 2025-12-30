@@ -1,8 +1,32 @@
+"use client"
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import { useLogin } from "@/utils/hooks/auth";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+
+type LoginForm = {
+  email: string;
+  password: string;
+};
 
 const Signin = () => {
+  const [form, setForm] = useState<LoginForm>({
+  email: "",
+  password: "",
+});
+  const { mutate: login, isPending, isSuccess, isError, error } = useLogin();
+
+  const handleChange = (e:any)=>{
+    setForm(prev=>({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+  }
+
+  const handleSubmit = ()=>{
+    login(form);
+  }
+
   return (
     <>
       <Breadcrumb title={"Signin"} pages={["Signin"]} />
@@ -24,6 +48,7 @@ const Signin = () => {
                   </label>
 
                   <input
+                  onChange={handleChange}
                     type="email"
                     name="email"
                     id="email"
@@ -39,6 +64,7 @@ const Signin = () => {
 
                   <input
                     type="password"
+                    onChange={handleChange}
                     name="password"
                     id="password"
                     placeholder="Enter your password"
@@ -48,7 +74,8 @@ const Signin = () => {
                 </div>
 
                 <button
-                  type="submit"
+                onClick={handleSubmit}
+                  type="button"
                   className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5"
                 >
                   Sign in to account
