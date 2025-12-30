@@ -5,6 +5,9 @@ import React, { useEffect, useState } from "react";
 import Button from "@/components/dashboard/forms/Button";
 import { useRouter } from "next/navigation";
 import { useGetProducts } from "@/utils/hooks/product";
+import DataTable from "@/components/dashboard/table/DataTable";
+import { LaptopSpecs } from "@/types/product";
+import { Plus } from "lucide-react";
 // export const metadata: Metadata = {
 //   title: "Products List | In House Shop",
 //   description: "Products list page.",
@@ -23,11 +26,75 @@ export interface Product {
     image: string; // Assuming image URL is returned
 }
 
+type SpecsCellProps = {
+    specs: LaptopSpecs;
+};
+
+export const SpecsCell = ({ specs }: SpecsCellProps) => {
+    return (
+        <div className="px-4 py-3 flex items-start">
+            <div className="space-y-1 text-sm text-slate-700">
+                <p>
+                    <span className="font-medium">Processor:</span>{" "}
+                    {specs.processor}
+                </p>
+                <p>
+                    <span className="font-medium">RAM:</span> {specs.ram}
+                </p>
+                <p>
+                    <span className="font-medium">Storage:</span>{" "}
+                    {specs.storage}
+                </p>
+                <p>
+                    <span className="font-medium">Display:</span>{" "}
+                    {specs.display}
+                </p>
+                <p>
+                    <span className="font-medium">Graphics:</span>{" "}
+                    {specs.graphics}
+                </p>
+                <p>
+                    <span className="font-medium">OS:</span> {specs.os}
+                </p>
+            </div>
+        </div>
+    );
+};
+
+type NameDescriptionCellProps = {
+    name: string;
+    description?: string;
+};
+
+export const NameDescriptionCell = ({
+    name,
+    description,
+}: NameDescriptionCellProps) => {
+    return (
+        <div className="px-4 py-3 flex items-start">
+            <div className="max-w-[320px]">
+                {/* Name */}
+                <p className="font-semibold text-slate-900 leading-tight">
+                    {name}
+                </p>
+
+                {/* Description */}
+                {description && (
+                    <p className="mt-1 text-sm text-slate-500 line-clamp-2">
+                        {description}
+                    </p>
+                )}
+            </div>
+        </div>
+    );
+};
+
+
 const BlogGridPage = () => {
     const router = useRouter();
     const [products, setProducts] = useState([]);
-    const {data} = useGetProducts();
-    
+    const { data } = useGetProducts();
+
     console.log("data===>", data);
 
     const fetchData = async () => {
@@ -74,56 +141,50 @@ const BlogGridPage = () => {
         fetchData()
     }, [])
 
+    const HEADERS = ['Name', 'Specifications', 'Price', 'SKU', 'Stock ']
+
 
     return (
         <main>
-            {/* Display products */}
+
+
+
             <div className="mx-auto max-w-[1200px] px-4">
 
                 <div className="flex justify-between my-4">
 
                     <h1 className="text-[2rem] leading-[2rem]">Product List</h1>
-                    <Button onClick={goToCreate}>Add Product</Button>
+
+                    <button onClick={goToCreate} className="flex gap-2"><Plus />Add Product</button>
                 </div>
                 <div className="overflow-x-auto">
-                <table className="w-full min-w-[992px] table-auto border-collapse border border-gray-300 shadow-lg bg-white">
-                <thead className="bg-gray-200">
-                    <tr>
-                        <th className="bg-[#33d476] text-white border-0  px-4 py-2 text-left">#</th>
-                        <th className="bg-[#33d476] text-white px-4 py-2 text-left">Name</th>
-                        <th className="bg-[#33d476] text-white px-4 py-2 text-left">Description</th>
-                        <th className="bg-[#33d476] text-white px-4 py-2 text-left">Discount Price</th>
-                        <th className="bg-[#33d476] text-white px-4 py-2 text-left">Price</th>
-                        <th className="bg-[#33d476] text-white px-4 py-2 text-left">Image</th>
-                        <th className="bg-[#33d476] text-white px-4 py-2 text-left">Actions</th>
-                    </tr>
-                    </thead>
-                    {products.length === 0 ? (
-                        <p>No products available</p>
-                    ) : (
-                        <tbody>{
-                            products?.map((product, i) => (<tr key={product._id} className="odd:bg-gray-50 even:bg-white hover:bg-gray-100">
-                                <td className="border border-gray-300 px-4 py-1">{i+1}</td>
-                                <td className="border border-gray-300 px-4 py-1">{product.name}</td>
-                                <td className="border border-gray-300 px-4 py-1">{product?.description}</td>
-                                <td className="border border-gray-300 px-4 py-1">{product?.price}</td>
-                                <td className="border border-gray-300 px-4 py-1 text-green-600 font-semibold">{product?.discount_price}</td>
-                                <td className="border border-gray-300 px-4 py-1">                                <img className="max-w-full w-[100px] rounded-md" src={`${backendURL}${product.image}`} alt={product.name} />
-                                </td>
-                                <td className="border border-gray-300 px-4 py-2">
-                                    <div className="flex gap-3 items-center mt-3">
-                                        <Button onClick={() => goToEdit(product?._id)} className="!px-2">Edit</Button>
-                                        <Button className="!px-2" onClick={() => handleDelete(product._id)}> Delete</Button>
-                                    </div>
-                                </td>
-                            </tr>
-                            ))
-                        }
-                        </tbody>
-                    )}
-                       
-                </table>
-            </div>
+                    <DataTable headers={HEADERS}>
+
+                        {data?.data?.map(item => {
+                            return (
+                                <tr key={item._id}>
+                                    <td><NameDescriptionCell name={item.name} description={item.description} /></td>
+                                    <td><SpecsCell specs={item.specifications} /></td>
+                                    <td>
+                                        <div>
+                                            <p>Price: {item.price || '--'}</p>
+                                            <p>Discount Price: {item.discountPrice || '--'}</p>
+                                        </div>
+                                    </td>
+                                    <td>{item.sku || '--'}</td>
+                                    <td>{item.stock || '--'}</td>
+                                    <td>
+                                        <div className="flex gap-3 items-center mt-3">
+                                            <Button onClick={() => goToEdit(item?._id)} className="!px-2">Edit</Button>
+                                            <Button className="!px-2" onClick={() => handleDelete(item._id)}> Delete</Button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        })}
+                    </DataTable>
+
+                </div>
             </div>
         </main>
     );
