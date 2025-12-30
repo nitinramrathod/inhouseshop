@@ -7,6 +7,7 @@ import { LaptopSpecs } from "@/types/product";
 import { Pencil, Trash } from "lucide-react";
 import PageHeader from "@/components/dashboard/table/PageHeader";
 import RowLoader from "@/components/dashboard/table/RowLoader";
+import { useOrders } from "@/utils/hooks/order";
 
 const backendURL = 'http://localhost:3001'
 
@@ -86,7 +87,7 @@ export const NameDescriptionCell = ({
 
 const OrderList = () => {
     const router = useRouter();
-    const { data, loading, refetch } = useGetProducts();
+    const { data, isPending, refetch } = useOrders({ mine: false });
 
 
     const goToEdit = (id) => {
@@ -113,27 +114,86 @@ const OrderList = () => {
             <PageHeader href="/admin/orders/create" title="Order List" buttonText="Add Order" />
             <div className="overflow-x-auto">
                 <DataTable headers={HEADERS}>
-                    {loading ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.data?.map(item => {
+                    {isPending ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.data?.map(item => {
                         return (
-                            <tr key={item._id}>
-                                <td><NameDescriptionCell name={item.name} description={item.description} /></td>
-                                <td><img width="100" height='100' src={item?.images[0]} alt={item.name} /></td>
-                                <td><SpecsCell specs={item.specifications} /></td>
-                                <td>
-                                    <div>
-                                        <p>Price: {item.price || '--'}</p>
-                                        <p>Discount Price: {item.discountPrice || '--'}</p>
+                            // <tr key={item._id}>
+                            <tr className="border-b hover:bg-slate-50 transition" key={item._id}>
+                            
+
+                                {/* User */}
+                                <td className="px-4 py-3 text-sm">
+                                    <div className="font-medium text-slate-800">
+                                        {item.user?.email || "Guest"}
+                                    </div>
+                                    <div className="text-xs text-slate-500">
+                                        {item.shippingAddress?.country}
                                     </div>
                                 </td>
-                                <td>{item.sku || '--'}</td>
-                                <td>{item.stock || '--'}</td>
-                                <td>
-                                    <div className="flex px-4 py-3 gap-3 items-center mt-3">
-                                        <Button onClick={() => goToEdit(item?._id)} className="!px-2"><Pencil size={'1rem'} /></Button>
-                                        <Button className="!px-2" onClick={() => handleDelete(item._id)}><Trash size={'1rem'} /></Button>
-                                    </div>
+
+                                {/* Items */}
+                                <td className="px-4 py-3 text-sm">
+                                    <ul className="space-y-1">
+                                        {item.items.map((item: any, idx: number) => (
+                                            <li key={idx} className="text-slate-700">
+                                                <span className="font-medium">{item.product.name}</span>
+                                                <span className="text-slate-500"> × {item.quantity}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </td>
+
+                                {/* Total */}
+                                <td className="px-4 py-3 text-sm font-semibold text-slate-900">
+                                    ₹{item.totalAmount.toLocaleString()}
+                                </td>
+
+                                {/* Order Status */}
+                                <td className="px-4 py-3 text-sm">
+                                    <span
+                                        className={`px-2 py-1 rounded-full text-xs font-medium
+        ${item.orderStatus === "PENDING"
+                                                ? "bg-yellow-100 text-yellow-700"
+                                                : "bg-green-100 text-green-700"
+                                            }
+      `}
+                                    >
+                                        {item.orderStatus}
+                                    </span>
+                                </td>
+
+                                {/* Payment Status */}
+                                <td className="px-4 py-3 text-sm">
+                                    <span
+                                        className={`px-2 py-1 rounded-full text-xs font-medium
+        ${item.paymentStatus === "PENDING"
+                                                ? "bg-red-100 text-red-700"
+                                                : "bg-green-100 text-green-700"
+                                            }
+      `}
+                                    >
+                                        {item.paymentStatus}
+                                    </span>
+                                </td>
+
+                                {/* Payment Method */}
+                                <td className="px-4 py-3 text-sm text-slate-700">
+                                    {item.paymentMethod}
+                                </td>
+
+                                {/* Date */}
+                                <td className="px-4 py-3 text-sm text-slate-600">
+                                    {new Date(item.createdAt).toLocaleDateString()}
+                                </td>
+
+                                {/* Action */}
+                                <td className="px-4 py-3 text-sm">
+                                    <button className="text-blue-600 hover:underline font-medium">
+                                        View
+                                    </button>
                                 </td>
                             </tr>
+                              
+                     
                         )
                     })}
                 </DataTable>
