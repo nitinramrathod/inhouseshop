@@ -8,6 +8,8 @@ import { useGetProducts } from "@/utils/hooks/product";
 import DataTable from "@/components/dashboard/table/DataTable";
 import { LaptopSpecs } from "@/types/product";
 import { Pencil, Plus, Trash } from "lucide-react";
+import PageHeader from "@/components/dashboard/table/PageHeader";
+import RowLoader from "@/components/dashboard/table/RowLoader";
 // export const metadata: Metadata = {
 //   title: "Products List | In House Shop",
 //   description: "Products list page.",
@@ -93,9 +95,7 @@ export const NameDescriptionCell = ({
 const BlogGridPage = () => {
     const router = useRouter();
     const [products, setProducts] = useState([]);
-    const { data } = useGetProducts();
-
-    console.log("data===>", data);
+    const { data, loading } = useGetProducts();
 
     const fetchData = async () => {
         const res = await fetch(`${backendURL}/products`, {
@@ -117,9 +117,6 @@ const BlogGridPage = () => {
         setProducts(products)
     }
 
-    const goToCreate = () => {
-        router.push('/admin/products/create')
-    }
     const goToEdit = (id) => {
         router.push(`/admin/products/${id}`)
     }
@@ -141,26 +138,16 @@ const BlogGridPage = () => {
         fetchData()
     }, [])
 
-    const HEADERS = ['Name', 'Specifications', 'Price', 'SKU', 'Stock ']
+    const HEADERS = ['Name', 'Image', 'Specifications', 'Price', 'SKU', 'Stock', 'Action']
 
 
     return (
         <main>
-
-
-
-            <div className="mx-auto max-w-[1200px] px-4">
-
-                <div className="flex justify-between my-4">
-
-                    <h1 className="text-[2rem] leading-[2rem]">Product List</h1>
-
-                    <button onClick={goToCreate} className="flex gap-2"><Plus />Add Product</button>
-                </div>
+            <div className="mx-auto px-4">
+               <PageHeader href="/admin/products/create" title="Product List" buttonText="Add Product"/>
                 <div className="overflow-x-auto">
                     <DataTable headers={HEADERS}>
-
-                        {data?.data?.map(item => {
+                        {loading ? <RowLoader rows={15} cols={HEADERS.length}/> : data?.data?.map(item => {
                             return (
                                 <tr key={item._id}>
                                     <td><NameDescriptionCell name={item.name} description={item.description} /></td>
@@ -175,16 +162,15 @@ const BlogGridPage = () => {
                                     <td>{item.sku || '--'}</td>
                                     <td>{item.stock || '--'}</td>
                                     <td>
-                                        <div className="flex gap-3 items-center mt-3">
-                                            <Button onClick={() => goToEdit(item?._id)} className="!px-2"><Pencil /></Button>
-                                            <Button className="!px-2" onClick={() => handleDelete(item._id)}><Trash /></Button>
+                                        <div className="flex px-4 py-3 gap-3 items-center mt-3">
+                                            <Button onClick={() => goToEdit(item?._id)} className="!px-2"><Pencil size={'1rem'}/></Button>
+                                            <Button className="!px-2" onClick={() => handleDelete(item._id)}><Trash size={'1rem'}/></Button>
                                         </div>
                                     </td>
                                 </tr>
                             )
                         })}
                     </DataTable>
-
                 </div>
             </div>
         </main>

@@ -17,9 +17,10 @@ export default function RootLayout({
       </head>
       <body>
         <section className="flex gap-2">
-          <SideNavigation></SideNavigation>
-
-        {children}
+        <SideNavigation/>
+        <div className="flex-1">
+          {children}
+        </div>
         </section>
         </body>
     </html>

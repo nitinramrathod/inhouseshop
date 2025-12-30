@@ -7,15 +7,15 @@ type DataTableProps = {
 
 const DataTable = ({ headers, children }: DataTableProps) => {
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-auto h-[88vh] overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
       <table className="w-full border-collapse">
         {/* ---------- Table Head ---------- */}
-        <thead className="bg-slate-100">
+        <thead className="bg-blue">
           <tr>
             {headers.map((header) => (
               <th
                 key={header}
-                className="px-4 py-3 text-left text-sm font-semibold text-slate-700"
+                className="px-4 py-3 text-left text-sm font-semibold text-white"
               >
                 {header}
               </th>
