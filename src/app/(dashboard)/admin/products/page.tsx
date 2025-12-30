@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useGetProducts } from "@/utils/hooks/product";
 import DataTable from "@/components/dashboard/table/DataTable";
 import { LaptopSpecs } from "@/types/product";
-import { Plus } from "lucide-react";
+import { Pencil, Plus, Trash } from "lucide-react";
 // export const metadata: Metadata = {
 //   title: "Products List | In House Shop",
 //   description: "Products list page.",
@@ -33,7 +33,7 @@ type SpecsCellProps = {
 export const SpecsCell = ({ specs }: SpecsCellProps) => {
     return (
         <div className="px-4 py-3 flex items-start">
-            <div className="space-y-1 text-sm text-slate-700">
+            <div className="space-y-1 text-sm text-slate-700 grid grid-cols-2 gap-2">
                 <p>
                     <span className="font-medium">Processor:</span>{" "}
                     {specs.processor}
@@ -164,6 +164,7 @@ const BlogGridPage = () => {
                             return (
                                 <tr key={item._id}>
                                     <td><NameDescriptionCell name={item.name} description={item.description} /></td>
+                                    <td><img width="100" height='100' src={item?.images[0]} alt={item.name} /></td>
                                     <td><SpecsCell specs={item.specifications} /></td>
                                     <td>
                                         <div>
@@ -175,8 +176,8 @@ const BlogGridPage = () => {
                                     <td>{item.stock || '--'}</td>
                                     <td>
                                         <div className="flex gap-3 items-center mt-3">
-                                            <Button onClick={() => goToEdit(item?._id)} className="!px-2">Edit</Button>
-                                            <Button className="!px-2" onClick={() => handleDelete(item._id)}> Delete</Button>
+                                            <Button onClick={() => goToEdit(item?._id)} className="!px-2"><Pencil /></Button>
+                                            <Button className="!px-2" onClick={() => handleDelete(item._id)}><Trash /></Button>
                                         </div>
                                     </td>
                                 </tr>
