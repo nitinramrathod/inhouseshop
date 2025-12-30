@@ -77,7 +77,7 @@ export const userService = {
    */
   async getAll(params?: { page?: number; limit?: number; search?: string }) {
     const res = await protectedAxios.get('/api/v1/users', { params })
-    return res.data
+    return res
   },
 
   /**

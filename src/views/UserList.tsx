@@ -87,13 +87,10 @@ export const NameDescriptionCell = ({
 
 const UserList = () => {
     const router = useRouter();
-    const { data, refetch } = useUsers();
-    const loading = true;
-
-    console.log('data==>', data);
+    const { data, refetch, isPending } = useUsers();
 
     const goToEdit = (id) => {
-        router.push(`/admin/products/${id}`)
+        router.push(`/admin/users/${id}`)
     }
 
     const handleDelete = async (id) => {
@@ -108,7 +105,7 @@ const UserList = () => {
         }
     }
 
-    const HEADERS = ['Name', 'Image', 'Specifications', 'Price', 'SKU', 'Stock', 'Action'];
+    const HEADERS = ['Name', 'Email', 'Role', 'Status', 'Joined At', 'Action'];
 
     return (
 
@@ -116,26 +113,20 @@ const UserList = () => {
             <PageHeader href="/admin/users/create" title="User List" buttonText="Add User" />
             <div className="overflow-x-auto">
                 <DataTable headers={HEADERS}>
-                    {loading ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.data?.map(item => {
+                    {isPending ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.data?.map(item => {
                         return (
                             <tr key={item._id}>
-                                <td><NameDescriptionCell name={item.name} description={item.description} /></td>
-                                <td><img width="100" height='100' src={item?.images[0]} alt={item.name} /></td>
-                                <td><SpecsCell specs={item.specifications} /></td>
-                                <td>
-                                    <div>
-                                        <p>Price: {item.price || '--'}</p>
-                                        <p>Discount Price: {item.discountPrice || '--'}</p>
-                                    </div>
-                                </td>
-                                <td>{item.sku || '--'}</td>
-                                <td>{item.stock || '--'}</td>
-                                <td>
+                                <td className="px-4">{item.firstName} {item.lastName}</td>                                
+                                <td className="px-4">{item.email || '--'}</td>
+                                <td className="px-4">{item.role || '--'}</td>
+                                <td className="px-4">{item.isActive ? <p className="text-green">Active</p> : <p className="text-red">Inactive</p> }</td>
+                                <td className="px-4">{item.createdAt || '--'}</td>
+                                <td className="px-4">
                                     <div className="flex px-4 py-3 gap-3 items-center mt-3">
                                         <Button onClick={() => goToEdit(item?._id)} className="!px-2"><Pencil size={'1rem'} /></Button>
                                         <Button className="!px-2" onClick={() => handleDelete(item._id)}><Trash size={'1rem'} /></Button>
                                     </div>
-                                </td>
+                                </td> 
                             </tr>
                         )
                     })}
