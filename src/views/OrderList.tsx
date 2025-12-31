@@ -106,7 +106,7 @@ const OrderList = () => {
         }
     }
 
-    const HEADERS = ['Name', 'Image', 'Specifications', 'Price', 'SKU', 'Stock', 'Action'];
+    const HEADERS = ['Product', 'Buyer', 'Total', 'Order Status', 'Payment', 'Payment Method', 'Order Date', 'Action'];
 
     return (
 
@@ -117,18 +117,7 @@ const OrderList = () => {
                     {isPending ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.data?.map(item => {
                         return (
                             // <tr key={item._id}>
-                            <tr className="border-b hover:bg-slate-50 transition" key={item._id}>
-                            
-
-                                {/* User */}
-                                <td className="px-4 py-3 text-sm">
-                                    <div className="font-medium text-slate-800">
-                                        {item.user?.email || "Guest"}
-                                    </div>
-                                    <div className="text-xs text-slate-500">
-                                        {item.shippingAddress?.country}
-                                    </div>
-                                </td>
+                            <tr className="border-b hover:bg-slate-50 transition" key={item._id}>                             
 
                                 {/* Items */}
                                 <td className="px-4 py-3 text-sm">
@@ -140,6 +129,16 @@ const OrderList = () => {
                                             </li>
                                         ))}
                                     </ul>
+                                </td>
+
+                                   {/* User */}
+                                <td className="px-4 py-3 text-sm">
+                                    <div className="font-medium text-slate-800">
+                                        {item.user?.email || "Guest"}
+                                    </div>
+                                    <div className="text-xs text-slate-500">
+                                        {item.shippingAddress?.country}
+                                    </div>
                                 </td>
 
                                 {/* Total */}
