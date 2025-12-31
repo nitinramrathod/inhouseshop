@@ -11,7 +11,7 @@ export interface LaptopSpecs {
 
 export type Product = {
   title: string;
-  _id: string;
+  _id?: string;
   name?: string;
   description?: string;
   inStock?: boolean;
@@ -23,7 +23,7 @@ export type Product = {
   discountedPrice: number;
   discountPrice?: number;
   sku?: string;
-  stock: number;  
+  stock?: number;  
   id: number;
   images?: string[];
   imgs?: {

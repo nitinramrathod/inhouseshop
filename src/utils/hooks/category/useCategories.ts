@@ -5,7 +5,7 @@ export const useCategories = (params?: CategoryQueryParams) => {
   return useQuery({
     queryKey: ['categories', params],
     queryFn: () => categoryService.getAll(params),
-    keepPreviousData: true,
+    // keepPreviousData: true,
     staleTime: 1000 * 60 * 5,
   })
 }
