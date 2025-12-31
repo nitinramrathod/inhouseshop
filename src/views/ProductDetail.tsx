@@ -14,7 +14,7 @@ interface FormData {
     stock?: string;
     specifications?: any;
     price?: number | string;
-    discount_price?: number | string;
+    discountPrice?: number | string;
     description?: string;
     image?: File | string;
 }
@@ -45,10 +45,10 @@ const ProductDetail = ({data}:any) => {
         try {
             const formData = new FormData();
 
-            formData.append('name', form?.name)
-            formData.append('price', form?.price?.toString())
-            formData.append('discount_price', form?.discount_price?.toString())
-            formData.append('description', form?.description)
+            formData.append('name', form?.name);
+            formData.append('price', form?.price?.toString());
+            formData.append('discountPrice', form?.discountPrice?.toString());
+            formData.append('description', form?.description);
 
             if (form.image) {
                 formData.append('image', form.image);
@@ -121,11 +121,11 @@ const ProductDetail = ({data}:any) => {
                 />
                 <Input
                     label='Enter Discount Price'
-                    name='discount_price'
+                    name='discountPrice'
                     type="number"
                     placeholder='Enter Product Discount Price'
                     onChange={handleInputChange}
-                    value={form?.discount_price || ""}
+                    value={form?.discountPrice || ""}
                 />
                 <div>
 
