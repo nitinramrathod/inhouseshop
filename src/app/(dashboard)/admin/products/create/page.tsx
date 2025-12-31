@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import ProductDetail from "../../common/ProductDetail";
+import ProductDetail from "../../../../../views/ProductDetail";
 
 
 export const metadata: Metadata = {

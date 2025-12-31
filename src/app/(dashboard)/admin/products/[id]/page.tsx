@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import ProductDetail from "../../common/ProductDetail";
+import ProductDetail from "../../../../../views/ProductDetail";
 // import { Product } from "@/types/product";
 const backendURL = 'http://localhost:3001';
 

@@ -6,8 +6,8 @@ export const metadata: Metadata = {
   description: "View Orders",
 };
 
-const CreateProduct = () => {
+const OrderListPage = () => {
   return <OrderList></OrderList>
 }
 
-export default CreateProduct
+export default OrderListPage

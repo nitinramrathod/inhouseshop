@@ -9,6 +9,10 @@ const backendURL = 'http://localhost:3001';
 
 interface FormData {
     name?: string;
+    brand?: string;
+    category?: string;
+    stock?: string;
+    specifications?: any;
     price?: number | string;
     discount_price?: number | string;
     description?: string;
@@ -57,8 +61,7 @@ const ProductDetail = ({data}:any) => {
                 {
                     method: method,
                     body: formData,
-                    headers:{
-                        
+                    headers:{                        
                         contentType: 'multipart/form-data'
                     }
                 })
@@ -88,18 +91,25 @@ const ProductDetail = ({data}:any) => {
     
 
     return (
-        <div className='p-3 max-w-[1200px] mx-auto pt-9'>
+        <div className='p-3 mx-auto pt-9'>
             <div className="flex mb-6 items-center gap-5">
                 <Button onClick={goToList} className='!px-2'><span className="material-symbols-outlined">arrow_back</span></Button>
                 <h1 className='text-[2rem]  leading-[3rem]'>{isEdit ? "Edit Product":'Create Product'}</h1>
             </div>
-            <div className='grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+            <div className='grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4'>
                 <Input
                     label='Enter Name'
                     name='name'
                     placeholder='Enter Product Name'
                     onChange={handleInputChange}
                     value={form?.name || ""}
+                />
+                 <Input
+                    label='Enter brand'
+                    name='brand'
+                    placeholder='Enter Product brand'
+                    onChange={handleInputChange}
+                    value={form?.brand || ""}
                 />
                 <Input
                     label='Enter Price'

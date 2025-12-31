@@ -6,8 +6,8 @@ export const metadata: Metadata = {
   description: "Manage users",
 };
 
-const UsersPage = () => {
+const UsersListPage = () => {
   return <UserList/>;
 };
 
-export default UsersPage;
+export default UsersListPage;
