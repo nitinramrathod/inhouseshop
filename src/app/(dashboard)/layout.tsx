@@ -11,18 +11,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <head>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_back" />
-      </head>
-      <body>
-        <section className="flex gap-2">
-        <SideNavigation/>
-        <div className="flex-1">
-          {children}
-        </div>
-        </section>
-        </body>
-    </html>
+    <section className="flex gap-2">
+      <SideNavigation />
+      <div className="flex-1">
+        {children}
+      </div>
+    </section>
   )
 }
