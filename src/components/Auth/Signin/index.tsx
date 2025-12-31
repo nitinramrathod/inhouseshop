@@ -11,21 +11,22 @@ type LoginForm = {
 
 const Signin = () => {
   const [form, setForm] = useState<LoginForm>({
-  email: "",
-  password: "",
-});
+    email: "",
+    password: "",
+  });
   const { mutate: login, isPending, isSuccess, isError, error } = useLogin();
 
-  const handleChange = (e:any)=>{
-    setForm(prev=>({
-      ...prev,
-      [e.target.name]: e.target.value
-    }))
-  }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // prevent page reload
+    const formData = new FormData(e.currentTarget);
 
-  const handleSubmit = ()=>{
-    login(form);
-  }
+    // Safely get values from FormData (returns FormDataEntryValue | null)
+    const email = String(formData.get("email") ?? "");
+    const password = String(formData.get("password") ?? "");
+
+    login({ email, password });
+  };
+
 
   return (
     <>
@@ -41,14 +42,13 @@ const Signin = () => {
             </div>
 
             <div>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-5">
                   <label htmlFor="email" className="block mb-2.5">
                     Email
                   </label>
 
                   <input
-                  onChange={handleChange}
                     type="email"
                     name="email"
                     id="email"
@@ -65,7 +65,6 @@ const Signin = () => {
 
                   <input
                     type="password"
-                    onChange={handleChange}
                     name="password"
                     id="password"
                     placeholder="Enter your password"
@@ -76,9 +75,8 @@ const Signin = () => {
                 </div>
 
                 <button
-                onClick={handleSubmit}
-                disabled={isPending}
-                  type="button"
+                  disabled={isPending}
+                  type="submit"
                   className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5"
                 >
                   {isPending ? "Signing In..." : "Sign in to account"}
