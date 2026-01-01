@@ -10,6 +10,7 @@ import {
   Star,
   LogOut,
   Menu,
+  Tag,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -23,7 +24,7 @@ const navItems: NavItem[] = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
   { label: "Products", icon: Package, href: "/admin/products" },
   { label: "Orders", icon: ShoppingCart, href: "/admin/orders" },
-  { label: "Categories", icon: Star, href: "/admin/categories" },
+  { label: "Categories", icon: Tag , href: "/admin/categories" },
   { label: "Users", icon: Users, href: "/admin/users" },
 ];
 
@@ -41,7 +42,7 @@ export default function SideNavigation() {
       {/* ---------- Logo ---------- */}
       <div className="flex items-center justify-between px-4 h-16 border-b border-slate-800">
         <div className="flex items-center gap-2">
-          <Image src="/logo.svg" alt="Logo" width={32} height={32} />
+          <Image src="/images/logo/admin-logo.png" alt="Logo" width={32} height={32} />
           {!collapsed && (
             <span className="font-semibold text-lg">Admin Panel</span>
           )}
@@ -83,7 +84,7 @@ export default function SideNavigation() {
       <div className="border-t border-slate-800 p-4">
         <div className="flex items-center gap-3">
           <Image
-            src="/avatar.png"
+            src="/images/logo/avatar.png"
             alt="User"
             width={36}
             height={36}
