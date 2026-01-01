@@ -1,3 +1,4 @@
+import Dashboard from "@/views/dashboard/Dashboard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const DashboardPage = () => {
-  return <h1>Dashboard</h1>;
+  return <Dashboard></Dashboard>;
 };
 
 export default DashboardPage;

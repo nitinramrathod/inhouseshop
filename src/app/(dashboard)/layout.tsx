@@ -11,9 +11,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <section className="flex gap-2">
+    <section className="flex gap-2 h-screen min-h-[400px] overflow-auto">
       <SideNavigation />
-      <div className="flex-1">
+      <div className="flex-1 h-full overflow-auto">
         {children}
       </div>
     </section>

@@ -23,7 +23,15 @@ const config: Config = {
         xl: "0",
       },
     },
-    colors: {
+ 
+    screens: {
+      xsm: "375px",
+      lsm: "425px",
+      "3xl": "2000px",
+      ...defaultTheme.screens,
+    },
+    extend: {
+         colors: {
       current: "currentColor",
       transparent: "transparent",
       white: "#FFFFFF",
@@ -99,13 +107,6 @@ const config: Config = {
         dark: "#E1580E",
       },
     },
-    screens: {
-      xsm: "375px",
-      lsm: "425px",
-      "3xl": "2000px",
-      ...defaultTheme.screens,
-    },
-    extend: {
       fontSize: {
         "2xs": ["10px", "17px"],
         "heading-1": ["60px", "72px"],

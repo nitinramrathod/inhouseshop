@@ -24,7 +24,7 @@ const navItems: NavItem[] = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
   { label: "Products", icon: Package, href: "/admin/products" },
   { label: "Orders", icon: ShoppingCart, href: "/admin/orders" },
-  { label: "Categories", icon: Tag , href: "/admin/categories" },
+  { label: "Categories", icon: Tag, href: "/admin/categories" },
   { label: "Users", icon: Users, href: "/admin/users" },
 ];
 
@@ -35,22 +35,21 @@ export default function SideNavigation() {
 
   return (
     <aside
-      className={`h-screen bg-blue text-white flex flex-col transition-all duration-300 ${
-        collapsed ? "w-20" : "w-64"
-      }`}
+      className={`h-full bg-blue-light text-white flex flex-col transition-all duration-300 ${collapsed ? "w-16" : "w-64"
+        }`}
     >
       {/* ---------- Logo ---------- */}
-      <div className="flex items-center justify-between px-4 h-16 border-b border-slate-800">
-        <div className="flex items-center gap-2">
-          <Image src="/images/logo/admin-logo.png" alt="Logo" width={32} height={32} />
-          {!collapsed && (
+      <div className="flex items-center justify-between py-4 px-4 h-16 border-b border-slate-800">
+        {!collapsed && (
+          <div className="flex items-center gap-2">
+            <Image src="/images/logo/admin-logo.png" alt="Logo" width={32} height={32} />
             <span className="font-semibold text-lg">Admin Panel</span>
-          )}
-        </div>
+          </div>
+        )}
 
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="text-slate-400 hover:text-white"
+          className={`text-slate-300 hover:text-white ${collapsed ?"w-full flex justify-center" : ""}`}
         >
           <Menu size={20} />
         </button>
@@ -65,11 +64,10 @@ export default function SideNavigation() {
             <button
               key={label}
               onClick={() => router.push(href)}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-md transition
-                ${
-                  isActive
-                    ? "bg-slate-800 text-white"
-                    : "text-slate-400 hover:bg-slate-800 hover:text-white"
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-md transition ${collapsed ? "justify-center" : ""}
+                ${isActive
+                  ? "bg-blue-800 text-white"
+                  : "text-slate-100 hover:bg-blue-800 hover:text-white"
                 }
               `}
             >
