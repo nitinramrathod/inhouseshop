@@ -3,7 +3,7 @@ import { Metadata } from "next";
 // export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "NextCommerce | Nextjs E-commerce template",
+  title: "Inhouse Shop | Nextjs E-commerce template",
   description: "This is Home for NextCommerce Template",
   // other metadata
 };
@@ -13,7 +13,7 @@ async function getProducts(searchParams:any) {
   // const query = new URLSearchParams(searchParams).toString();
   const query = ''
 
-  const res = await fetch(`${process.env.BACKEND_URL}/api/v1/products?${query}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products?${query}`, {
     cache: "no-store"
   });
 
@@ -22,10 +22,7 @@ async function getProducts(searchParams:any) {
 }
 
 export default async function HomePage({ searchParams }: any) {
-    const products = await getProducts(searchParams);
-
-    console.log("product==>",products)
-  
+    const products = await getProducts(searchParams);  
 
   return (
     <>

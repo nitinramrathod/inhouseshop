@@ -1,133 +1,145 @@
 "use client"
-import Button from '@/components/dashboard/forms/Button';
-import Input from '@/components/dashboard/forms/Input';
-import Textarea from '@/components/dashboard/forms/Textarea';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
 
-const backendURL = 'http://localhost:3001';
+import Button from '@/components/dashboard/forms/Button'
+import Input from '@/components/dashboard/forms/Input'
+import Textarea from '@/components/dashboard/forms/Textarea'
+import { useCategories } from '@/utils/hooks/category'
+import { useProductMutations } from '@/utils/hooks/product/useProductMutation'
+import { LeafIcon, MoveLeft } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 
-interface FormData {
-    name?: string;
-    brand?: string;
-    category?: string;
-    stock?: string;
-    specifications?: any;
-    price?: number | string;
-    discountPrice?: number | string;
-    description?: string;
-    image?: File | string;
-}
-
-const ProductDetail = ({data}:any) => {
-    console.log('data', data)
-    const [form, setForm] = useState<FormData>({});
+const ProductDetail = ({ data }: any) => {
+    const router = useRouter()
+    const { createProduct } = useProductMutations()
     const [isEdit, setIsEdit] = useState(false);
-    const router = useRouter();
+    const { data: categories } = useCategories();
 
-    const handleInputChange = (e: any) => {
-        const { name, value } = e.target;
+    console.log("categories==>", categories);
+
+    const [form, setForm] = useState({
+        name: '',
+        brand: '',
+        category: '',
+        description: '',
+        price: '',
+        discountPrice: '',
+        stock: '',
+        sku: '',
+        processor: '',
+        ram: '',
+        storage: '',
+        graphics: '',
+        display: '',
+        os: '',
+        images: [] as File[],
+    })
+
+    useEffect(() => {
+        if (data) {
+            setIsEdit(true)
+            setForm({
+                ...data,
+                images: data.images?.join(',') || '',
+                ...data.specifications,
+            })
+        }
+    }, [data])
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) return
+
         setForm(prev => ({
             ...prev,
-            [name]: value
+            images: Array.from(e.target.files),
         }))
     }
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        setForm((prev) => ({
-          ...prev,
-          [e.target.name]: file || null
-        }));
-      };
 
-    const handleSubmit = async () => {
-        try {
-            const formData = new FormData();
-
-            formData.append('name', form?.name);
-            formData.append('price', form?.price?.toString());
-            formData.append('discountPrice', form?.discountPrice?.toString());
-            formData.append('description', form?.description);
-
-            if (form.image) {
-                formData.append('image', form.image);
-            }
-
-            const url = isEdit ? `${backendURL}/products/${data?._id}`: `${backendURL}/products`
-            const method = isEdit ? 'PUT' : 'POST'
-
-            const res = await fetch(url,
-                {
-                    method: method,
-                    body: formData,
-                    headers:{                        
-                        contentType: 'multipart/form-data'
-                    }
-                })
-
-            if (res.ok) {
-                setForm({})
-                router.push('/admin/products')
-            } else {
-                alert('Error while creating product.')
-            }
-
-        } catch (error) {
-
-        }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
-    const goToList = ()=>{
-        router.push('/admin/products')
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+
+        const formData = new FormData()
+
+        formData.append('name', form.name)
+        formData.append('brand', form.brand)
+        formData.append('category', form.category)
+        formData.append('description', form.description)
+        formData.append('price', String(form.price))
+        formData.append('discountPrice', String(form.discountPrice))
+        formData.append('stock', String(form.stock))
+        formData.append('sku', form.sku)
+
+        // Specifications
+        const specifications = {
+            processor: form.processor,
+            ram: form.ram,
+            storage: form.storage,
+            graphics: form.graphics,
+            display: form.display,
+            os: form.os,
+        };
+
+        formData.append('specifications', JSON.stringify(specifications))
+
+        form.images.forEach((file, index) => {
+            formData.append(`images[${index}]`, file)
+        })
+
+        createProduct.mutate(formData, {
+            onSuccess: () => router.push('/admin/products'),
+        })
     }
 
-    useEffect(() => {
-        if(data){
-            setIsEdit(true)
-            setForm(data)
-        }
-    }, [data])
-    
 
     return (
         <div className='p-3 mx-auto pt-9'>
             <div className="flex mb-6 items-center gap-5">
-                <Button onClick={goToList} className='!px-2'><span className="material-symbols-outlined">arrow_back</span></Button>
-                <h1 className='text-[2rem]  leading-[3rem]'>{isEdit ? "Edit Product":'Create Product'}</h1>
+                <Button onClick={() => router.push('/admin/products')} className='!px-2'>
+                    <MoveLeft />
+                </Button>
+                <h1 className='text-2xl'>{isEdit ? "Edit Product" : "Create Product"}</h1>
             </div>
-            <div className='grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4'>
-                <Input
-                    label='Enter Name'
-                    name='name'
-                    placeholder='Enter Product Name'
-                    onChange={handleInputChange}
-                    value={form?.name || ""}
-                />
-                 <Input
-                    label='Enter brand'
-                    name='brand'
-                    placeholder='Enter Product brand'
-                    onChange={handleInputChange}
-                    value={form?.brand || ""}
-                />
-                <Input
-                    label='Enter Price'
-                    name='price'
-                    type="number"
-                    placeholder='Enter Product Price'
-                    onChange={handleInputChange}
-                    value={form?.price || ""}
-                />
-                <Input
-                    label='Enter Discount Price'
-                    name='discountPrice'
-                    type="number"
-                    placeholder='Enter Product Discount Price'
-                    onChange={handleInputChange}
-                    value={form?.discountPrice || ""}
-                />
+
+            <form onSubmit={handleSubmit} className='grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4'>
+                <Input label='Name' name='name' onChange={handleChange} value={form.name} />
+                <Input label='Brand' name='brand' onChange={handleChange} value={form.brand} />
+                {/* <Input label='Category' name='category' onChange={handleChange} value={form.category} /> */}
+
                 <div>
+                    <label htmlFor="category" className='block pb-2'>Select Category</label>
+
+                    <select
+                        id='category'
+                        name="category"
+                        value={form.category}
+                        onChange={handleChange}
+                        className="border rounded p-2 w-full"
+                        required
+                    >
+                        <option value="" disabled>Select Category</option>
+
+                        {categories?.map((cat: any) => (
+                            <option key={cat._id} value={cat._id}>
+                                {cat.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <Input label='Price' name='price' type='number' onChange={handleChange} value={form.price} />
+                <Input label='Discount Price' name='discountPrice' type='number' onChange={handleChange} value={form.discountPrice} />
+                <Input label='Stock' name='stock' type='number' onChange={handleChange} value={form.stock} />
+
+                <Input label='Processor' name='processor' onChange={handleChange} value={form.processor} />
+                <Input label='RAM' name='ram' onChange={handleChange} value={form.ram} />
+                <Input label='Storage' name='storage' onChange={handleChange} value={form.storage} />
+                <Input label='Graphics' name='graphics' onChange={handleChange} value={form.graphics} />
+                <Input label='Display' name='display' onChange={handleChange} value={form.display} />
+                <Input label='OS' name='os' onChange={handleChange} value={form.os} />
 
                 <Input
                     label='Select Product Image'
@@ -135,17 +147,16 @@ const ProductDetail = ({data}:any) => {
                     placeholder='Select Product Image'
                     type="file"
                     onChange={handleImageChange}
-                    />
-                    {isEdit && <img className='mt-3 rounded-md w-full aspect-[2/.7] object-cover' src={`${backendURL}${data?.image}`} />}
-                    </div>
-                <Textarea value={form?.description || ""} name="description" onChange={handleInputChange} className=' col-start-1  md:col-end-3 lg:col-end-4 row-end-3 gr' />
+                />
 
-            </div>
-            <div className='mt-9'>
+                <Textarea label='Description' name='description' onChange={handleChange} value={form.description} className='md:col-span-3' />
 
-                <Button onClick={handleSubmit} >{isEdit?"Update":'Submit'}</Button>
-            </div>
-
+                <div className='mt-6'>
+                    <Button type='submit'>
+                        {isEdit ? 'Update Product' : 'Create Product'}
+                    </Button>
+                </div>
+            </form>
         </div>
     )
 }

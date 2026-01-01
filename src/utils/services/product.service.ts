@@ -17,13 +17,27 @@ export type ProductSearchParams = {
 
 export type CreateProductPayload = {
   name: string
-  description?: string
+  brand: string
+  category: string
+  description: string
+
   price: number
   discountPrice?: number
-  category: string
   stock: number
-  images?: string[]
+  sku: string
+
+  specifications: {
+    processor?: string
+    ram?: string
+    storage?: string
+    graphics?: string
+    display?: string
+    os?: string
+  }
+
+  images?: File[]   // 👈 important change
 }
+
 
 export type UpdateProductPayload = Partial<CreateProductPayload>
 
@@ -68,12 +82,20 @@ export const productService = {
 
   /* ---------- CREATE PRODUCT ---------- */
   async create(
-    payload: CreateProductPayload
+    payload: FormData
   ): Promise<ProductResponse> {
-    const res = await protectedAxios.post(
-      '/api/v1/products',
-      payload
-    )
+    // const res = await protectedAxios.post(
+    //   '/api/v1/products',
+    //   payload
+    // )
+
+    const res = await protectedAxios({
+      method: 'POST',
+      url:  '/api/v1/products',
+      data: payload
+    })
+
+
     return res.data
   },
 
