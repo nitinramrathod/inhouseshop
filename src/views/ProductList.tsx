@@ -87,7 +87,7 @@ export const NameDescriptionCell = ({
 
 const ProductList = () => {
     const router = useRouter();
-    const { data, loading, refetch } = useGetProducts();
+    const { data, isPending, refetch } = useGetProducts();
 
 
     const goToEdit = (id) => {
@@ -114,7 +114,7 @@ const ProductList = () => {
             <PageHeader href="/admin/products/create" title="Product List" buttonText="Add Product" />
             <div className="overflow-x-auto">
                 <DataTable headers={HEADERS}>
-                    {loading ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.data?.map(item => {
+                    {isPending ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.map(item => {
                         return (
                             <tr key={item._id}>
                                 <td><NameDescriptionCell name={item.name} description={item.description} /></td>
