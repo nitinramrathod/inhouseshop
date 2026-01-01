@@ -8,7 +8,7 @@ import { Pencil, Trash } from "lucide-react";
 import PageHeader from "@/components/dashboard/table/PageHeader";
 import RowLoader from "@/components/dashboard/table/RowLoader";
 import { useUsers } from "@/utils/hooks/user";
-import { useCategories } from "@/utils/hooks/category";
+import { useCategories, useCategoryMutations } from "@/utils/hooks/category";
 
 const backendURL = 'http://localhost:3001'
 
@@ -89,23 +89,21 @@ export const NameDescriptionCell = ({
 const CategoryList = () => {
     const router = useRouter();
     const { data, refetch, isPending } = useCategories();
+    const {deleteCategory}= useCategoryMutations();
 
     const goToEdit = (id) => {
         router.push(`/admin/users/${id}`)
     }
 
-    console.log('data', data);
-
-    const handleDelete = async (id) => {
-        const res = await fetch(`${backendURL}/products/${id}`, {
-            method: "Delete"
+     const handleDelete = async (id:string) => {
+        deleteCategory.mutate(id, {
+            onError: (err:any)=>{
+                 console.log('onError==>',err)
+            },
+            onSuccess:(res:any)=>{
+                console.log('onSuccess==>',res)
+            }
         });
-
-        if (!res.ok) {
-            throw new Error("Failed to delete product");
-        } else {
-            refetch()
-        }
     }
 
     const HEADERS = ['Name', 'Slug', 'Status', 'Created At', 'Action'];
@@ -135,9 +133,9 @@ const CategoryList = () => {
                                 {/* Status */}
                                 <td className="px-6 py-4">
                                     <span
-                                        className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${item.isActive
-                                                ? "bg-green text-white"
-                                                : "bg-red text-red-light"
+                                        className={`inline-flex text-white items-center px-2.5 py-1 rounded-full text-xs font-medium ${item.isActive
+                                                ? "bg-green "
+                                                : "bg-red"
                                             }`}
                                     >
                                         {item.isActive ? "Active" : "Inactive"}
@@ -151,8 +149,8 @@ const CategoryList = () => {
 
                                 <td className="px-4">
                                     <div className="flex px-4 py-3 gap-3 items-center mt-3">
-                                        <Button onClick={() => goToEdit(item?._id)} className="!px-2"><Pencil size={'1rem'} /></Button>
-                                        <Button className="!px-2" onClick={() => handleDelete(item._id)}><Trash size={'1rem'} /></Button>
+                                        {/* <button onClick={() => handleEdit(item?._id)} className="!px-2"><Pencil size={'1.2rem'} /></button> */}
+                                        <button className="text-red" onClick={() => handleDelete(item._id)}><Trash size={'1.2rem'} /></button>
                                     </div>
                                 </td>
                             </tr>

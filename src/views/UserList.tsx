@@ -7,7 +7,7 @@ import { LaptopSpecs } from "@/types/product";
 import { Pencil, Trash } from "lucide-react";
 import PageHeader from "@/components/dashboard/table/PageHeader";
 import RowLoader from "@/components/dashboard/table/RowLoader";
-import { useUsers } from "@/utils/hooks/user";
+import { useUserMutations, useUsers } from "@/utils/hooks/user";
 
 const backendURL = 'http://localhost:3001'
 
@@ -87,22 +87,22 @@ export const NameDescriptionCell = ({
 
 const UserList = () => {
     const router = useRouter();
-    const { data, refetch, isPending } = useUsers();
+    const { data, isPending } = useUsers();
+    const {deleteUser} = useUserMutations();
 
     const goToEdit = (id) => {
         router.push(`/admin/users/${id}`)
     }
 
-    const handleDelete = async (id) => {
-        const res = await fetch(`${backendURL}/products/${id}`, {
-            method: "Delete"
+    const handleDelete = async (id:string) => {
+        deleteUser.mutate(id, {
+            onError: (err:any)=>{
+                 console.log('onError==>',err)
+            },
+            onSuccess:(res:any)=>{
+                console.log('onSuccess==>',res)
+            }
         });
-
-        if (!res.ok) {
-            throw new Error("Failed to delete product");
-        } else {
-            refetch()
-        }
     }
 
     const HEADERS = ['Name', 'Email', 'Role', 'Status', 'Joined At', 'Action'];
@@ -123,8 +123,8 @@ const UserList = () => {
                                 <td className="px-4">{item.createdAt || '--'}</td>
                                 <td className="px-4">
                                     <div className="flex px-4 py-3 gap-3 items-center mt-3">
-                                        <Button onClick={() => goToEdit(item?._id)} className="!px-2"><Pencil size={'1rem'} /></Button>
-                                        <Button className="!px-2" onClick={() => handleDelete(item._id)}><Trash size={'1rem'} /></Button>
+                                        {/* <button onClick={() => handleEdit(item?._id)} className="!px-2"><Pencil size={'1.2rem'} /></button> */}
+                                        <button className="text-red" onClick={() => handleDelete(item._id)}><Trash size={'1.2rem'} /></button>
                                     </div>
                                 </td> 
                             </tr>

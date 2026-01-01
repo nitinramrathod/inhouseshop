@@ -8,6 +8,7 @@ import { Pencil, Trash } from "lucide-react";
 import PageHeader from "@/components/dashboard/table/PageHeader";
 import RowLoader from "@/components/dashboard/table/RowLoader";
 import { useReviews } from "@/utils/hooks/review";
+import RowNoDataFound from "@/components/dashboard/table/RowNoDataFound";
 
 const backendURL = 'http://localhost:3001'
 
@@ -85,7 +86,7 @@ export const NameDescriptionCell = ({
 };
 
 
-const ReviewList = ({productId}:{productId:string}) => {
+const ReviewList = ({ productId }: { productId: string }) => {
     const router = useRouter();
     const { data, isPending, refetch } = useReviews(productId);
 
@@ -113,23 +114,25 @@ const ReviewList = ({productId}:{productId:string}) => {
             <PageHeader href="/admin/reviews/create" backTo={'/admin/products'} title="Review List" buttonText="Add Review" />
             <div className="overflow-x-auto">
                 <DataTable headers={HEADERS}>
-                    {isPending ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.data?.map(item => {
+                    {isPending ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.data?.length > 0 ? data?.data?.map(item => {
                         return (
                             <tr key={item._id}>
                                 <td className="px-2">{item.product}</td>
                                 <td className="px-2">{item.rating}</td>
                                 <td className="px-2">{item.comment}</td>
                                 <td className="px-2">{item.user.firstName} {item.user.firstName}</td>
-                                <td className="px-2">{item.createdAt}</td>                          
+                                <td className="px-2">{item.createdAt}</td>
                                 <td className="px-2">
                                     <div className="flex px-4 py-3 gap-3 items-center mt-3">
                                         <Button onClick={() => goToEdit(item?._id)} className="!px-2"><Pencil size={'1rem'} /></Button>
-                                        <Button className="!px-2" onClick={() => handleDelete(item._id)}><Trash size={'1rem'} /></Button>
+                                        {/* <button onClick={() => handleEdit(item?._id)} className="!px-2"><Pencil size={'1.2rem'} /></button> */}
+                                        <button className="text-red" onClick={() => handleDelete(item._id)}><Trash size={'1.2rem'} /></button>
+
                                     </div>
-                                </td> 
+                                </td>
                             </tr>
                         )
-                    })}
+                    }): <RowNoDataFound cols={HEADERS.length}/>}
                 </DataTable>
             </div>
         </div>

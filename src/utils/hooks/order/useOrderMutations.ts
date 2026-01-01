@@ -20,6 +20,14 @@ export const useOrderMutations = () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] })
     },
   })
+  
+  /* Cancel order */
+  const deleteOrder = useMutation({
+    mutationFn: orderService.remove,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['orders'] })
+    },
+  })
 
   /* Admin: update status */
   const updateOrderStatus = useMutation({
@@ -34,6 +42,7 @@ export const useOrderMutations = () => {
   return {
     createOrder,
     cancelOrder,
+    deleteOrder,
     updateOrderStatus,
   }
 }

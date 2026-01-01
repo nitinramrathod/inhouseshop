@@ -91,4 +91,11 @@ export const orderService = {
     )
     return res.data
   },
+  
+  async remove(orderId: string) {
+    const res = await protectedAxios.delete(
+      `/api/v1/orders/${orderId}`
+    )
+    return res.data
+  },
 }

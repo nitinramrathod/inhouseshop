@@ -7,7 +7,7 @@ import React, { useState } from 'react'
 import { MoveLeft } from 'lucide-react'
 import { useCategoryMutations } from '@/utils/hooks/category'
 
-const CreateCategory = ({ data }: any) => {
+const CategoryDetail = ({ data }: any) => {
     const router = useRouter()
     const { createCategory } = useCategoryMutations()
 
@@ -100,4 +100,4 @@ const CreateCategory = ({ data }: any) => {
     )
 }
 
-export default CreateCategory
+export default CategoryDetail

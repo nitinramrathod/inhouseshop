@@ -1,7 +1,7 @@
 "use client"
 import Button from "@/components/dashboard/forms/Button";
 import { useRouter } from "next/navigation";
-import { useGetProducts } from "@/utils/hooks/product";
+import { useGetProducts, useProductMutations } from "@/utils/hooks/product";
 import DataTable from "@/components/dashboard/table/DataTable";
 import { LaptopSpecs } from "@/types/product";
 import { MessageSquareText, Pencil, Trash } from "lucide-react";
@@ -87,23 +87,23 @@ export const NameDescriptionCell = ({
 
 const ProductList = () => {
     const router = useRouter();
-    const { data, isPending, refetch } = useGetProducts();
+    const { data, isPending} = useGetProducts();
+    const {deleteProduct} = useProductMutations();
 
 
     const goToEdit = (id) => {
         router.push(`/admin/products/${id}`)
     }
 
-    const handleDelete = async (id) => {
-        const res = await fetch(`${backendURL}/products/${id}`, {
-            method: "Delete"
+    const handleDelete = async (id:string) => {
+        deleteProduct.mutate(id, {
+            onError: (err:any)=>{
+                 console.log('onError==>',err)
+            },
+            onSuccess:(res:any)=>{
+                console.log('onSuccess==>',res)
+            }
         });
-
-        if (!res.ok) {
-            throw new Error("Failed to delete product");
-        } else {
-            refetch()
-        }
     }
 
     const HEADERS = ['Name', 'Image', 'Specifications', 'Price', 'SKU', 'Stock', 'Action'];
@@ -130,9 +130,9 @@ const ProductList = () => {
                                 <td>{item.stock || '--'}</td>
                                 <td>
                                     <div className="flex px-4 py-3 gap-3 items-center mt-3">
-                                        <Link href={`/admin/reviews/${item._id}`} title={`View reviews of ${item.name}`}><MessageSquareText /></Link>
-                                        <Button onClick={() => goToEdit(item?._id)} className="!px-2"><Pencil size={'1rem'} /></Button>
-                                        <Button className="!px-2" onClick={() => handleDelete(item._id)}><Trash size={'1rem'} /></Button>
+                                        <Link href={`/admin/reviews/${item._id}`} title={`View reviews of ${item.name}`}><MessageSquareText size={'1.2rem'} /></Link>
+                                        {/* <button onClick={() => handleEdit(item?._id)} className="!px-2"><Pencil size={'1.2rem'} /></button> */}
+                                        <button className="text-red" onClick={() => handleDelete(item._id)}><Trash size={'1.2rem'} /></button>
                                     </div>
                                 </td>
                             </tr>

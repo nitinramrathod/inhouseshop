@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const ProductListPage = () => {    
-    return <ProductList/>
+  return <ProductList/>
 };
 
 export default ProductListPage;

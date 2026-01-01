@@ -1,5 +1,5 @@
 import CategoryList from "@/views/CategoryList";
-import CreateCategory from "@/views/CreateCategory";
+import CategoryDetail from "@/views/CategoryDetail";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const CategoryDetailPage = () => {
-  return <CreateCategory></CreateCategory>
+  return <CategoryDetail/>
 }
 
 export default CategoryDetailPage
