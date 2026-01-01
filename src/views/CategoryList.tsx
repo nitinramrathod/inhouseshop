@@ -9,6 +9,7 @@ import PageHeader from "@/components/dashboard/table/PageHeader";
 import RowLoader from "@/components/dashboard/table/RowLoader";
 import { useUsers } from "@/utils/hooks/user";
 import { useCategories, useCategoryMutations } from "@/utils/hooks/category";
+import { formatDateTime } from "@/utils/helper/formatDateTime";
 
 const backendURL = 'http://localhost:3001'
 
@@ -144,7 +145,7 @@ const CategoryList = () => {
 
                                 {/* Created At */}
                                 <td className="px-6 py-4 text-slate-600">
-                                    {new Date(item.createdAt).toLocaleDateString()}
+                                    {formatDateTime(item.createdAt)}
                                 </td>
 
                                 <td className="px-4">

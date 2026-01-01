@@ -8,6 +8,7 @@ import { Pencil, Trash } from "lucide-react";
 import PageHeader from "@/components/dashboard/table/PageHeader";
 import RowLoader from "@/components/dashboard/table/RowLoader";
 import { useUserMutations, useUsers } from "@/utils/hooks/user";
+import { formatDateTime } from "@/utils/helper/formatDateTime";
 
 const backendURL = 'http://localhost:3001'
 
@@ -120,7 +121,7 @@ const UserList = () => {
                                 <td className="px-4">{item.email || '--'}</td>
                                 <td className="px-4">{item.role || '--'}</td>
                                 <td className="px-4">{item.isActive ? <p className="text-green">Active</p> : <p className="text-red">Inactive</p> }</td>
-                                <td className="px-4">{item.createdAt || '--'}</td>
+                                <td className="px-4">{formatDateTime(item.createdAt) || '--'}</td>
                                 <td className="px-4">
                                     <div className="flex px-4 py-3 gap-3 items-center mt-3">
                                         {/* <button onClick={() => handleEdit(item?._id)} className="!px-2"><Pencil size={'1.2rem'} /></button> */}

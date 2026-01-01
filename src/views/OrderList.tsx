@@ -1,89 +1,11 @@
 "use client"
-import Button from "@/components/dashboard/forms/Button";
 import { useRouter } from "next/navigation";
-import { useGetProducts } from "@/utils/hooks/product";
 import DataTable from "@/components/dashboard/table/DataTable";
-import { LaptopSpecs } from "@/types/product";
 import { Eye, Pencil, Trash } from "lucide-react";
 import PageHeader from "@/components/dashboard/table/PageHeader";
 import RowLoader from "@/components/dashboard/table/RowLoader";
 import { useOrderMutations, useOrders } from "@/utils/hooks/order";
-
-const backendURL = 'http://localhost:3001'
-
-export interface Product {
-    id: number;
-    name: string;
-    _id: string;
-    description: string;
-    price: string;
-    discount_price: string;
-    image: string; // Assuming image URL is returned
-}
-
-type SpecsCellProps = {
-    specs: LaptopSpecs;
-};
-
-export const SpecsCell = ({ specs }: SpecsCellProps) => {
-    return (
-        <div className="px-4 py-3 flex items-start">
-            <div className="space-y-1 text-sm text-slate-700 grid grid-cols-2 gap-2">
-                <p>
-                    <span className="font-medium">Processor:</span>{" "}
-                    {specs.processor}
-                </p>
-                <p>
-                    <span className="font-medium">RAM:</span> {specs.ram}
-                </p>
-                <p>
-                    <span className="font-medium">Storage:</span>{" "}
-                    {specs.storage}
-                </p>
-                <p>
-                    <span className="font-medium">Display:</span>{" "}
-                    {specs.display}
-                </p>
-                <p>
-                    <span className="font-medium">Graphics:</span>{" "}
-                    {specs.graphics}
-                </p>
-                <p>
-                    <span className="font-medium">OS:</span> {specs.os}
-                </p>
-            </div>
-        </div>
-    );
-};
-
-type NameDescriptionCellProps = {
-    name: string;
-    description?: string;
-};
-
-export const NameDescriptionCell = ({
-    name,
-    description,
-}: NameDescriptionCellProps) => {
-    return (
-        <div className="px-4 py-3 flex items-start">
-            <div className="max-w-[320px]">
-                {/* Name */}
-                <p className="font-semibold text-slate-900 leading-tight">
-                    {name}
-                </p>
-
-                {/* Description */}
-                {description && (
-                    <p className="mt-1 text-sm text-slate-500 line-clamp-2">
-                        {description}
-                    </p>
-                )}
-            </div>
-        </div>
-    );
-};
-
+import { formatDateTime } from "@/utils/helper/formatDateTime";
 
 const OrderList = () => {
     const router = useRouter();
@@ -96,7 +18,7 @@ const OrderList = () => {
     }
 
     const handleDelete = async (id: string) => {
-        deleteOrder.mutate(id + 'dd', {
+        deleteOrder.mutate(id, {
             onError: (err: any) => {
                 console.log('onError==>', err)
             },
@@ -106,7 +28,7 @@ const OrderList = () => {
         });
     }
 
-    const HEADERS = ['Product', 'Buyer', 'Total', 'Order Status', 'Payment', 'Payment Method', 'Order Date', 'Action'];
+    const HEADERS = ['Product', 'Buyer', 'Total', 'Order Status', 'Payment', 'Payment Method', 'Order Date', 'Is Deleted', 'Action'];
 
     return (
 
@@ -181,7 +103,12 @@ const OrderList = () => {
 
                                 {/* Date */}
                                 <td className="px-4 py-3 text-sm text-slate-600">
-                                    {new Date(item.createdAt).toLocaleDateString()}
+                                    {formatDateTime(item.createdAt)}
+                                </td>
+                                
+                                {/* Date */}
+                                <td className="px-4 py-3 text-sm text-slate-600">
+                                    {item.isDeleted ? <p className="text-red">Deleted</p>: <p className="text-green">Active</p>}
                                 </td>
 
                                 {/* Action */}
