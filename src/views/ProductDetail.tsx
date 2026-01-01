@@ -108,8 +108,7 @@ const ProductDetail = ({ data }: any) => {
             <form onSubmit={handleSubmit} className='grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4'>
                 <Input label='Name' name='name' onChange={handleChange} value={form.name} />
                 <Input label='Brand' name='brand' onChange={handleChange} value={form.brand} />
-                {/* <Input label='Category' name='category' onChange={handleChange} value={form.category} /> */}
-
+         
                 <div>
                     <label htmlFor="category" className='block pb-2'>Select Category</label>
 
