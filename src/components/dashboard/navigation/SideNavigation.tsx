@@ -2,18 +2,19 @@
 
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+
+import { signOut } from 'next-auth/react'
+
 import {
   LayoutDashboard,
   Package,
   ShoppingCart,
   Users,
-  Star,
   LogOut,
   Menu,
   Tag,
 } from "lucide-react";
 import Image from "next/image";
-// import { getSession } from "next-auth/react";
 
 type NavItem = {
   label: string;
@@ -34,10 +35,10 @@ export default function SideNavigation() {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-    const { data: session, status } = useSession()
+  const { data: session, status } = useSession()
 
-    console.log('client session', session)
-     console.log('client status', status)
+  console.log('client session', session)
+  console.log('client status', status)
 
 
 
@@ -57,7 +58,7 @@ export default function SideNavigation() {
 
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className={`text-slate-300 hover:text-white ${collapsed ?"w-full flex justify-center" : ""}`}
+          className={`text-slate-300 hover:text-white ${collapsed ? "w-full flex justify-center" : ""}`}
         >
           <Menu size={20} />
         </button>
@@ -101,7 +102,11 @@ export default function SideNavigation() {
             <div className="flex-1">
               <p className="text-sm font-medium">{session?.user?.name || "Admin User"}</p>
               <button
-                onClick={() => console.log("logout")}
+                onClick={() =>
+                  signOut({
+                    callbackUrl: '/signin', // where user goes after logout
+                  })
+                }
                 className="flex items-center gap-1 text-sm text-red-400 hover:text-red-500"
               >
                 <LogOut size={14} />
