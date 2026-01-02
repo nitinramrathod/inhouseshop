@@ -13,6 +13,7 @@ import {
   Tag,
 } from "lucide-react";
 import Image from "next/image";
+// import { getSession } from "next-auth/react";
 
 type NavItem = {
   label: string;
@@ -28,10 +29,17 @@ const navItems: NavItem[] = [
   { label: "Users", icon: Users, href: "/admin/users" },
 ];
 
+import { useSession } from "next-auth/react"
 export default function SideNavigation() {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+    const { data: session, status } = useSession()
+
+    console.log('client session', session)
+     console.log('client status', status)
+
+
 
   return (
     <aside
@@ -91,7 +99,7 @@ export default function SideNavigation() {
 
           {!collapsed && (
             <div className="flex-1">
-              <p className="text-sm font-medium">Admin User</p>
+              <p className="text-sm font-medium">{session?.user?.name || "Admin User"}</p>
               <button
                 onClick={() => console.log("logout")}
                 className="flex items-center gap-1 text-sm text-red-400 hover:text-red-500"
