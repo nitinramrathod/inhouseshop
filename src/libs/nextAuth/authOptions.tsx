@@ -25,8 +25,6 @@ export const AuthOptions: NextAuthOptions = {
           }
         );
 
-        console.log("res==>", res)
-
         if (!res.ok) {
           const error = await res.json();
           throw new Error(error.message || "Login failed");
@@ -34,12 +32,10 @@ export const AuthOptions: NextAuthOptions = {
 
         const data = await res.json();
 
-        console.log('data==>', data)
-
         return {
           id: data.user.id,
           email: data.user.email,
-          name: data.user.name,
+          name: data.user.firstName + " " + data.user.lastName,
           role: data.user.role,
           accessToken: data.token,
         };
