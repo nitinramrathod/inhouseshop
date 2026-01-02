@@ -9,6 +9,7 @@ import PageHeader from "@/components/dashboard/table/PageHeader";
 import RowLoader from "@/components/dashboard/table/RowLoader";
 import { useUserMutations, useUsers } from "@/utils/hooks/user";
 import { formatDateTime } from "@/utils/helper/formatDateTime";
+import Link from "next/link";
 
 const backendURL = 'http://localhost:3001'
 
@@ -87,13 +88,9 @@ export const NameDescriptionCell = ({
 
 
 const UserList = () => {
-    const router = useRouter();
+
     const { data, isPending } = useUsers();
     const {deleteUser} = useUserMutations();
-
-    const goToEdit = (id) => {
-        router.push(`/admin/users/${id}`)
-    }
 
     const handleDelete = async (id:string) => {
         deleteUser.mutate(id, {
@@ -124,8 +121,8 @@ const UserList = () => {
                                 <td className="px-4">{formatDateTime(item.createdAt) || '--'}</td>
                                 <td className="px-4">
                                     <div className="flex px-4 py-3 gap-3 items-center mt-3">
-                                        {/* <button onClick={() => handleEdit(item?._id)} className="!px-2"><Pencil size={'1.2rem'} /></button> */}
-                                        <button className="text-red" onClick={() => handleDelete(item._id)}><Trash size={'1.2rem'} /></button>
+                                        <Link href={`/admin/users/edit/${item._id}`} className="!px-2"><Pencil size={'1.2rem'} /></Link>
+                                       <button className="text-red" onClick={() => handleDelete(item._id)}><Trash size={'1.2rem'} /></button>
                                     </div>
                                 </td> 
                             </tr>
