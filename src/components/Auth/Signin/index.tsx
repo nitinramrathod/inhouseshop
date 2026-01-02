@@ -1,6 +1,7 @@
 "use client"
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import { useLogin } from "@/utils/hooks/auth";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -16,7 +17,7 @@ const Signin = () => {
   });
   const { mutate: login, isPending, isSuccess, isError, error } = useLogin();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // prevent page reload
     const formData = new FormData(e.currentTarget);
 
@@ -24,7 +25,18 @@ const Signin = () => {
     const email = String(formData.get("email") ?? "");
     const password = String(formData.get("password") ?? "");
 
-    login({ email, password });
+    // const handleLogin = async () => {
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: true,
+      callbackUrl: "/admin",
+    });
+
+    console.log('response from login==>', res);
+    // };
+
+    // login({ email, password });
   };
 
 

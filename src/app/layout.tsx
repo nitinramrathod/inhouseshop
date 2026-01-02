@@ -1,12 +1,20 @@
 import { ReactQueryProvider } from "@/utils/providers/ReactQueryProvider";
 import "./css/euclid-circular-a-font.css";
 import "./css/style.css";
+import { NextSessionProvider } from "@/utils/providers/NextSessionProvider";
+import { getServerSession } from "next-auth";
+import { AuthOptions } from "@/libs/nextAuth/authOptions";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
+  const session = await getServerSession(AuthOptions);
+
+  console.log('session==>', session);
+  
   return (
     <html lang="en">
       <head>
@@ -14,7 +22,9 @@ export default function RootLayout({
       </head>
       <body>
         <ReactQueryProvider>
-          {children}
+          <NextSessionProvider session={session}>
+            {children}
+          </NextSessionProvider>
         </ReactQueryProvider>
       </body>
     </html>
