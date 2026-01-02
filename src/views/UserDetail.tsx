@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { MoveLeft, Plus, Trash } from 'lucide-react'
 import { useUserMutations } from '@/utils/hooks/user'
-// import { useUserMutations } from '@/utils/hooks/user/useUserMutation'
 
 const emptyAddress = {
     fullName: '',
@@ -23,7 +22,7 @@ const emptyAddress = {
 
 const CreateUser = ({ data }: any) => {
     const router = useRouter()
-    const { register } = useUserMutations()
+    const { register, updateUser } = useUserMutations()
     const [isEdit, setIsEdit] = useState(false)
 
     const [form, setForm] = useState({
@@ -69,9 +68,17 @@ const CreateUser = ({ data }: any) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        register.mutate(form, {
-            onSuccess: () => router.push('/admin/users'),
-        })
+
+        if (isEdit) {
+            updateUser.mutate({ userId: data?._id, payload: form }, {
+                onSuccess: () => router.push('/admin/users'),
+            })
+
+        } else {
+            register.mutate(form, {
+                onSuccess: () => router.push('/admin/users'),
+            })
+        }
     }
 
     return (
@@ -85,11 +92,11 @@ const CreateUser = ({ data }: any) => {
 
             <form onSubmit={handleSubmit} className='grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
 
-                <Input label='First Name' name='firstName' value={form.firstName} onChange={handleChange}  />
-                <Input label='Last Name' name='lastName' value={form.lastName} onChange={handleChange}  />
-                <Input label='Email' name='email' value={form.email} onChange={handleChange}  />
+                <Input label='First Name' name='firstName' value={form.firstName} onChange={handleChange} />
+                <Input label='Last Name' name='lastName' value={form.lastName} onChange={handleChange} />
+                <Input label='Email' name='email' value={form.email} onChange={handleChange} />
                 {!isEdit && (
-                    <Input label='Password' name='password' type='password' value={form.password} onChange={handleChange}  />
+                    <Input label='Password' name='password' type='password' value={form.password} onChange={handleChange} />
                 )}
 
                 <div>
