@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react'
 
 const ProductDetail = ({ data }: any) => {
     const router = useRouter()
-    const { createProduct } = useProductMutations()
+    const { createProduct, updateProduct } = useProductMutations()
     const [isEdit, setIsEdit] = useState(false);
     const { data: categories } = useCategories();
 
@@ -43,6 +43,9 @@ const ProductDetail = ({ data }: any) => {
             })
         }
     }, [data]);
+
+    console.log('product data', form)
+
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return
@@ -88,9 +91,16 @@ const ProductDetail = ({ data }: any) => {
             formData.append(`images[${index}]`, file)
         })
 
-        createProduct.mutate(formData, {
-            onSuccess: () => router.push('/admin/products'),
-        })
+        if (isEdit) {
+            updateProduct.mutate({ productId: data?._id, payload: formData }, {
+                onSuccess: () => router.push('/admin/products'),
+            })
+
+        } else {
+            createProduct.mutate(formData, {
+                onSuccess: () => router.push('/admin/products'),
+            })
+        }
     }
 
 
@@ -106,7 +116,7 @@ const ProductDetail = ({ data }: any) => {
             <form onSubmit={handleSubmit} className='grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4'>
                 <Input label='Name' name='name' onChange={handleChange} value={form.name} />
                 <Input label='Brand' name='brand' onChange={handleChange} value={form.brand} />
-         
+
                 <div>
                     <label htmlFor="category" className='block pb-2'>Select Category</label>
 
