@@ -13,9 +13,9 @@ protectedAxios.interceptors.request.use(async (config: any) => {
     }
 
     // Get session to extract token
-    // const session = await getSession()
-    // const token = session?.accessToken
-    const token = localStorage.getItem('access_token');
+    const session = await getSession()
+    const token = session?.accessToken
+    // const token = localStorage.getItem('access_token');
 
     console.log('Admin Token:', token)
 

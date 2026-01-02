@@ -11,21 +11,15 @@ type LoginForm = {
 };
 
 const Signin = () => {
-  const [form, setForm] = useState<LoginForm>({
-    email: "",
-    password: "",
-  });
   const { mutate: login, isPending, isSuccess, isError, error } = useLogin();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // prevent page reload
     const formData = new FormData(e.currentTarget);
 
-    // Safely get values from FormData (returns FormDataEntryValue | null)
     const email = String(formData.get("email") ?? "");
     const password = String(formData.get("password") ?? "");
 
-    // const handleLogin = async () => {
     const res = await signIn("credentials", {
       email,
       password,
@@ -34,9 +28,6 @@ const Signin = () => {
     });
 
     console.log('response from login==>', res);
-    // };
-
-    // login({ email, password });
   };
 
 
