@@ -5,7 +5,7 @@ import Input from '@/components/dashboard/forms/Input'
 import Textarea from '@/components/dashboard/forms/Textarea'
 import { useCategories } from '@/utils/hooks/category'
 import { useProductMutations } from '@/utils/hooks/product/useProductMutation'
-import { MoveLeft } from 'lucide-react'
+import { MoveLeft, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -13,6 +13,10 @@ const ProductDetail = ({ data }: any) => {
     const router = useRouter()
     const { createProduct, updateProduct } = useProductMutations()
     const [isEdit, setIsEdit] = useState(false);
+    const [existingImages, setExistingImages] = useState<string[]>([])
+    const [newImages, setNewImages] = useState<File[]>([])
+
+
     const { data: categories } = useCategories();
 
     const [form, setForm] = useState({
@@ -30,7 +34,7 @@ const ProductDetail = ({ data }: any) => {
         graphics: '',
         display: '',
         os: '',
-        images: [] as File[],
+        images: [] as File[] | string[],
     })
 
     useEffect(() => {
@@ -38,70 +42,128 @@ const ProductDetail = ({ data }: any) => {
             setIsEdit(true)
             setForm({
                 ...data,
-                images: data.images?.join(',') || '',
+                images: data.images || null,
                 ...data.specifications,
             })
+            setExistingImages(data.images || [])
         }
     }, [data]);
 
     console.log('product data', form)
 
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!e.target.files) return
+    // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     if (!e.target.files) return
 
-        setForm(prev => ({
-            ...prev,
-            images: Array.from(e.target.files),
-        }))
-    }
+    //     setForm(prev => ({
+    //         ...prev,
+    //         images: Array.from(e.target.files),
+    //     }))
+    // }
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) return
+
+        setNewImages(prev => [...prev, ...Array.from(e.target.files)])
+    }
+
+    const removeNewImage = (index: number) => {
+        setNewImages(prev => prev.filter((_, i) => i !== index))
+    }
+
+    const removeExistingImage = (index: number) => {
+        setExistingImages(prev => prev.filter((_, i) => i !== index))
+    }
+
+
+    // const handleSubmit = (e: React.FormEvent) => {
+    //     e.preventDefault()
+
+    //     const formData = new FormData()
+
+    //     formData.append('name', form.name)
+    //     formData.append('brand', form.brand)
+    //     formData.append('category', form.category)
+    //     formData.append('description', form.description)
+    //     formData.append('price', String(form.price))
+    //     formData.append('discountPrice', String(form.discountPrice))
+    //     formData.append('stock', String(form.stock))
+    //     formData.append('sku', form.sku)
+
+    //     // Specifications
+    //     const specifications = {
+    //         processor: form.processor,
+    //         ram: form.ram,
+    //         storage: form.storage,
+    //         graphics: form.graphics,
+    //         display: form.display,
+    //         os: form.os,
+    //     };
+
+    //     formData.append('specifications', JSON.stringify(specifications))
+
+    //     form.images.forEach((file, index) => {
+    //         formData.append(`images[${index}]`, file)
+    //     })
+
+    //     if (isEdit) {
+    //         updateProduct.mutate({ productId: data?._id, payload: formData }, {
+    //             onSuccess: () => router.push('/admin/products'),
+    //         })
+
+    //     } else {
+    //         createProduct.mutate(formData, {
+    //             onSuccess: () => router.push('/admin/products'),
+    //         })
+    //     }
+    // }
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
 
         const formData = new FormData()
 
-        formData.append('name', form.name)
-        formData.append('brand', form.brand)
-        formData.append('category', form.category)
-        formData.append('description', form.description)
-        formData.append('price', String(form.price))
-        formData.append('discountPrice', String(form.discountPrice))
-        formData.append('stock', String(form.stock))
-        formData.append('sku', form.sku)
+        Object.entries(form).forEach(([key, value]) => {
+            formData.append(key, String(value))
+        })
 
-        // Specifications
-        const specifications = {
-            processor: form.processor,
-            ram: form.ram,
-            storage: form.storage,
-            graphics: form.graphics,
-            display: form.display,
-            os: form.os,
-        };
+        formData.append(
+            'specifications',
+            JSON.stringify({
+                processor: form.processor,
+                ram: form.ram,
+                storage: form.storage,
+                graphics: form.graphics,
+                display: form.display,
+                os: form.os,
+            })
+        )
 
-        formData.append('specifications', JSON.stringify(specifications))
+        // 🔥 send remaining old images
+        formData.append('existingImages', JSON.stringify(existingImages))
 
-        form.images.forEach((file, index) => {
-            formData.append(`images[${index}]`, file)
+        // 🔥 send only new files
+        newImages.forEach(file => {
+            formData.append('newImages', file)
         })
 
         if (isEdit) {
-            updateProduct.mutate({ productId: data?._id, payload: formData }, {
-                onSuccess: () => router.push('/admin/products'),
-            })
-
+            updateProduct.mutate(
+                { productId: data._id, payload: formData },
+                { onSuccess: () => router.push('/admin/products') }
+            )
         } else {
             createProduct.mutate(formData, {
                 onSuccess: () => router.push('/admin/products'),
             })
         }
     }
+
 
 
     return (
@@ -148,13 +210,58 @@ const ProductDetail = ({ data }: any) => {
                 <Input label='Display' name='display' onChange={handleChange} value={form.display} />
                 <Input label='OS' name='os' onChange={handleChange} value={form.os} />
 
-                <Input
-                    label='Select Product Image'
-                    name='image'
-                    placeholder='Select Product Image'
-                    type="file"
-                    onChange={handleImageChange}
-                />
+                <div>
+                    <Input
+                        label='Select Product Image'
+                        name='image'
+                        placeholder='Select Product Image'
+                        type="file"
+                        multiple={true}
+                        accept="image/*"
+                        onChange={handleImageChange}
+                    />
+                    <div className='flex gap-2 pt-3'>
+
+                        <div className="flex gap-2 pt-3 flex-wrap">
+
+                            {/* Existing Images */}
+                            {existingImages.map((img, index) => (
+                                <div key={img} className="relative">
+                                    <img src={img} width={70} height={70} className="border rounded" />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeExistingImage(index)}
+                                        className="absolute -top-2 -right-2 bg-red-500 py-1 text-white rounded-full px-1"
+                                    >
+                                        <X size={'1rem'} />
+                                    </button>
+                                </div>
+                            ))}
+
+                            {/* New Images */}
+                            {newImages.map((file, index) => (
+                                <div key={index} className="relative">
+                                    <img
+                                        src={URL.createObjectURL(file)}
+                                        width={70}
+                                        height={70}
+                                        className="border rounded"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeNewImage(index)}
+                                        className="absolute -top-2 -right-2 py-1 bg-red-500 text-white rounded-full px-1"
+                                    >
+                                        <X size={'1rem'} />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+
+
+                    </div>
+
+                </div>
 
                 <Textarea label='Description' name='description' onChange={handleChange} value={form.description} className='md:col-span-3' />
 
