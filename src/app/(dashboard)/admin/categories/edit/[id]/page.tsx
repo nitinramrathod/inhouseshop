@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 };
 
 interface PageProps {
-  params: {
+   params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const CategoryDetailPage = async ({ params }: PageProps) => {
@@ -18,7 +18,7 @@ const CategoryDetailPage = async ({ params }: PageProps) => {
   const { id } = await params;
 
   const category = await serverFetch(`/api/v1/categories/${id}`);
-  
+
   return <CategoryDetail data={category} />
 }
 

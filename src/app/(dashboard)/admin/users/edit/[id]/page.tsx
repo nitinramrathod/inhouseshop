@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 };
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const UsersDetailPage = async ({ params }: PageProps) => {

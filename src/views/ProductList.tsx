@@ -86,14 +86,8 @@ export const NameDescriptionCell = ({
 
 
 const ProductList = () => {
-    const router = useRouter();
     const { data, isPending} = useGetProducts();
     const {deleteProduct} = useProductMutations();
-
-
-    const goToEdit = (id) => {
-        router.push(`/admin/products/${id}`)
-    }
 
     const handleDelete = async (id:string) => {
         deleteProduct.mutate(id, {
@@ -131,7 +125,7 @@ const ProductList = () => {
                                 <td>
                                     <div className="flex px-4 py-3 gap-3 items-center mt-3">
                                         <Link href={`/admin/reviews/${item._id}`} title={`View reviews of ${item.name}`}><MessageSquareText size={'1.2rem'} /></Link>
-                                        {/* <button onClick={() => handleEdit(item?._id)} className="!px-2"><Pencil size={'1.2rem'} /></button> */}
+                                        <Link href={`/admin/products/edit/${item._id}`} className="!px-2"><Pencil size={'1.2rem'} /></Link>                                        
                                         <button className="text-red" onClick={() => handleDelete(item._id)}><Trash size={'1.2rem'} /></button>
                                     </div>
                                 </td>

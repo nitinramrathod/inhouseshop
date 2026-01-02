@@ -5,7 +5,7 @@ import Input from '@/components/dashboard/forms/Input'
 import Textarea from '@/components/dashboard/forms/Textarea'
 import { useCategories } from '@/utils/hooks/category'
 import { useProductMutations } from '@/utils/hooks/product/useProductMutation'
-import { LeafIcon, MoveLeft } from 'lucide-react'
+import { MoveLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -14,8 +14,6 @@ const ProductDetail = ({ data }: any) => {
     const { createProduct } = useProductMutations()
     const [isEdit, setIsEdit] = useState(false);
     const { data: categories } = useCategories();
-
-    console.log("categories==>", categories);
 
     const [form, setForm] = useState({
         name: '',
@@ -44,7 +42,7 @@ const ProductDetail = ({ data }: any) => {
                 ...data.specifications,
             })
         }
-    }, [data])
+    }, [data]);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return
