@@ -2,12 +2,12 @@ import CategoryList from "@/views/CategoryList";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Orders | In House Shop",
-  description: "View Orders",
+  title: "Categories | In House Shop",
+  description: "Categories List",
 };
 
 const CategoryListPage = () => {
-  return <CategoryList></CategoryList>
+  return <CategoryList/>
 }
 
 export default CategoryListPage

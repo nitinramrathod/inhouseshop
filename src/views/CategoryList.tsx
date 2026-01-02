@@ -1,17 +1,12 @@
 "use client"
-import Button from "@/components/dashboard/forms/Button";
-import { useRouter } from "next/navigation";
-import { useGetProducts } from "@/utils/hooks/product";
 import DataTable from "@/components/dashboard/table/DataTable";
 import { LaptopSpecs } from "@/types/product";
 import { Pencil, Trash } from "lucide-react";
 import PageHeader from "@/components/dashboard/table/PageHeader";
 import RowLoader from "@/components/dashboard/table/RowLoader";
-import { useUsers } from "@/utils/hooks/user";
 import { useCategories, useCategoryMutations } from "@/utils/hooks/category";
 import { formatDateTime } from "@/utils/helper/formatDateTime";
-
-const backendURL = 'http://localhost:3001'
+import Link from "next/link";
 
 export interface Product {
     id: number;
@@ -88,15 +83,10 @@ export const NameDescriptionCell = ({
 
 
 const CategoryList = () => {
-    const router = useRouter();
     const { data, refetch, isPending } = useCategories();
     const {deleteCategory}= useCategoryMutations();
 
-    const goToEdit = (id) => {
-        router.push(`/admin/users/${id}`)
-    }
-
-     const handleDelete = async (id:string) => {
+    const handleDelete = async (id:string) => {
         deleteCategory.mutate(id, {
             onError: (err:any)=>{
                  console.log('onError==>',err)
@@ -150,7 +140,7 @@ const CategoryList = () => {
 
                                 <td className="px-4">
                                     <div className="flex px-4 py-3 gap-3 items-center mt-3">
-                                        {/* <button onClick={() => handleEdit(item?._id)} className="!px-2"><Pencil size={'1.2rem'} /></button> */}
+                                        <Link href={`/admin/categories/edit/${item._id}`} className="!px-2"><Pencil size={'1.2rem'} /></Link>
                                         <button className="text-red" onClick={() => handleDelete(item._id)}><Trash size={'1.2rem'} /></button>
                                     </div>
                                 </td>

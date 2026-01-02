@@ -9,7 +9,7 @@ import { useCategoryMutations } from '@/utils/hooks/category'
 
 const CategoryDetail = ({ data }: any) => {
     const router = useRouter()
-    const { createCategory } = useCategoryMutations()
+    const { createCategory, updateCategory } = useCategoryMutations()
 
     const [isEdit, setIsEdit] = useState(false)
 
@@ -40,11 +40,17 @@ const CategoryDetail = ({ data }: any) => {
     }
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
+        e.preventDefault();
+        if (isEdit) {
+            updateCategory.mutate({categoryId: data?._id, payload:form}, {
+                onSuccess: () => router.push('/admin/categories'),
+            })
 
-        createCategory.mutate(form, {
-            onSuccess: () => router.push('/admin/categories'),
-        })
+        } else {
+            createCategory.mutate(form, {
+                onSuccess: () => router.push('/admin/categories'),
+            })
+        }
     }
 
     return (
