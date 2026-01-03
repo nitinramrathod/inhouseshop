@@ -86,7 +86,7 @@ export const productService = {
   ): Promise<ProductResponse> {
     const res = await protectedAxios({
       method: 'POST',
-      url:  '/api/v1/products-test',
+      url:  '/api/v1/products',
       data: payload
     })
 
