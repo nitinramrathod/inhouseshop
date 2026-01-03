@@ -6,7 +6,7 @@ type InitialState = {
 };
 
 type CartItem = {
-  id: number;
+  id: number | string;
   title: string;
   price: number;
   discountedPrice: number;

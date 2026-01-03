@@ -91,7 +91,7 @@ const SingleItem = ({ item }: { item: Product }) => {
         </div>
 
         <div className="flex justify-center items-center">
-          <Image src={item.images[0]} alt={item.name} width={280} height={280} />
+         {item?.images[0] && <Image src={item?.images[0]} alt={item.name} width={280} height={280} />}
         </div>
 
         <div className="absolute right-0 bottom-0 translate-x-full u-w-full flex flex-col gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0">

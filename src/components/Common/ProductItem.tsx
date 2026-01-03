@@ -28,6 +28,9 @@ const ProductItem = ({ item }: { item: Product }) => {
     dispatch(
       addItemToCart({
         ...item,
+        title: item.name,
+        id: item._id,
+        discountedPrice: item?.discountPrice,
         quantity: 1,
       })
     );
