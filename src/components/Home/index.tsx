@@ -15,7 +15,7 @@ const Home = ({products}:{products:any}) => {
       <Categories />
       <NewArrival products={products?.data}/>
       <PromoBanner />
-      <BestSeller />
+      <BestSeller products={products?.data} />
       <CounDown />
       <Testimonials />
       <Newsletter />
