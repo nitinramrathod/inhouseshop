@@ -17,7 +17,7 @@ export const menuData: Menu[] = [
     id: 3,
     title: "Contact",
     newTab: false,
-    path: "/contact",
+    path: "/contact-us",
   },
   {
     id: 6,
@@ -77,7 +77,7 @@ export const menuData: Menu[] = [
         id: 70,
         title: "Contact",
         newTab: false,
-        path: "/contact",
+        path: "/contact-us",
       },
       {
         id: 62,

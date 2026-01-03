@@ -13,14 +13,8 @@ import Image from "next/image";
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [navigationOpen, setNavigationOpen] = useState(false);
-  // const [stickyMenu, setStickyMenu] = useState(false);
-  // const [scrollingDown, setScrollingDown] = useState(false);
-  // const { openCartModal } = useCartModalContext();
 
-  // const product = useAppSelector((state) => state.cartReducer.items);
-  // const totalPrice = useSelector(selectTotalPrice);
-
-   const [stickyMenu, setStickyMenu] = useState(false);
+  const [stickyMenu, setStickyMenu] = useState(false);
   const [scrollingDown, setScrollingDown] = useState(false);
 
   const prevScrollY = useRef(0);
