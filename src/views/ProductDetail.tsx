@@ -288,6 +288,7 @@ import Textarea from "@/components/dashboard/forms/Textarea"
 import { useCategories } from "@/utils/hooks/category"
 import { useProductMutations } from "@/utils/hooks/product/useProductMutation"
 import { MoveLeft } from "lucide-react"
+import { preview_icon } from "@/assets/icons/common"
 
 interface ProductDetailProps {
   data?: any // Product data if editing
@@ -300,7 +301,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ data }) => {
   const [isEdit, setIsEdit] = useState(false)
 
   // Separate states for existing images and new files
-  const [existingImages, setExistingImages] = useState<string[]>([])
+  const [removedImages, setRemovedImages] = useState<string[]>([])
   const [newImages, setNewImages] = useState<File[]>([])
 
   const [form, setForm] = useState({
@@ -318,6 +319,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ data }) => {
     graphics: "",
     display: "",
     os: "",
+    images:[] as File[] | string[]
   })
 
   useEffect(() => {
@@ -338,8 +340,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ data }) => {
         graphics: data.specifications?.graphics || "",
         display: data.specifications?.display || "",
         os: data.specifications?.os || "",
+        images: data.images || []
       })
-      setExistingImages(data.images || [])
     }
   }, [data])
 
@@ -349,16 +351,24 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ data }) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleNewImages = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return
+  const handleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
     setNewImages(prev => [...prev, ...Array.from(e.target.files)])
   }
 
-  const handleRemoveImage = (index: number, type: "existing" | "new") => {
+  const handleRemoveImage = (index: number| string, type: "existing" | "new") => {
     if (type === "existing") {
-      setExistingImages(prev => prev.filter((_, i) => i !== index))
+      setForm((prev:any) => {
+        const images = prev.images.filter((imgUrl, i) => imgUrl !== index);
+        return({
+          ...prev,
+          images
+        })
+      });
+      
+      setRemovedImages(prev => [...prev, index as string]);
     } else {
-      setNewImages(prev => prev.filter((_, i) => i !== index))
+      setNewImages(prev => prev.filter((_, i) => i !== index));
     }
   }
 
@@ -383,15 +393,15 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ data }) => {
     }
     formData.append("specifications", JSON.stringify(specifications))
 
-    // Merge existing image URLs and new files
-    existingImages.forEach(url => formData.append("images[]", url))
-    newImages.forEach(file => formData.append("images[]", file))
+    removedImages.length > 0 && removedImages.forEach((url,i) => formData.append(`removedImages[${i}]`, url));
 
-    if (isEdit) {
+    newImages.length > 0 && newImages.forEach((file, i) => formData.append(`images[${i}]`, file))
+
+    if (isEdit) {      
       updateProduct.mutate({ productId: data._id, payload: formData }, {
         onSuccess: () => router.push("/admin/products"),
       })
-    } else {
+    } else {      
       createProduct.mutate(formData, {
         onSuccess: () => router.push("/admin/products"),
       })
@@ -445,21 +455,22 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ data }) => {
             type="file"
             multiple
             accept="image/*"
-            onChange={handleNewImages}
+            onChange={handleImages}
             className="border rounded p-2 w-full"
           />
 
-          <div className="flex gap-2 pt-3 flex-wrap">
-            {existingImages.map((url, i) => (
-              <div key={i} className="relative">
-                <img src={url} alt="existing" width={70} height={70} className="border rounded-md" />
-                <button
-                  type="button"
-                  onClick={() => handleRemoveImage(i, "existing")}
-                  className="absolute top-0 right-0 bg-red-600 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
-                >x</button>
-              </div>
-            ))}
+          <div className="flex gap-4 pt-5 flex-wrap">
+            {form.images.map((url, i) => {          
+              return (
+                <div key={i} className="relative">
+                  <img src={url} alt="existing" width={70} height={70} className="border rounded-md" />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(url, "existing")}
+                    className="absolute top-[-10px] right-[-10px] bg-red-600 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center"
+                  >x</button>
+                </div>)
+            })}
 
             {newImages.map((file, i) => {
               const preview = URL.createObjectURL(file)

@@ -84,14 +84,9 @@ export const productService = {
   async create(
     payload: FormData
   ): Promise<ProductResponse> {
-    // const res = await protectedAxios.post(
-    //   '/api/v1/products',
-    //   payload
-    // )
-
     const res = await protectedAxios({
       method: 'POST',
-      url:  '/api/v1/products',
+      url:  '/api/v1/products-test',
       data: payload
     })
 
