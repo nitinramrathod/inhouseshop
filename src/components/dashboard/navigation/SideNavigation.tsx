@@ -37,11 +37,6 @@ export default function SideNavigation() {
   const router = useRouter();
   const { data: session, status } = useSession()
 
-  console.log('client session', session)
-  console.log('client status', status)
-
-
-
   return (
     <aside
       className={`h-full bg-blue-light text-white flex flex-col transition-all duration-300 ${collapsed ? "w-16" : "w-64"

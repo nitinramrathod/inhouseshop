@@ -305,12 +305,12 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ data }) => {
   const [newImages, setNewImages] = useState<File[]>([])
 
   const [form, setForm] = useState({
-    name: "",
+    title: "",
     brand: "",
     category: "",
     description: "",
     price: "",
-    discountPrice: "",
+    discountedPrice: "",
     stock: "",
     sku: "",
     processor: "",
@@ -326,12 +326,12 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ data }) => {
     if (data) {
       setIsEdit(true)
       setForm({
-        name: data.name || "",
+        title: data.title || "",
         brand: data.brand || "",
         category: data.category || "",
         description: data.description || "",
         price: data.price || "",
-        discountPrice: data.discountPrice || "",
+        discountedPrice: data.discountedPrice || "",
         stock: data.stock || "",
         sku: data.sku || "",
         processor: data.specifications?.processor || "",
@@ -418,7 +418,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ data }) => {
       </div>
 
       <form onSubmit={handleSubmit} className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-        <Input label="Name" name="name" value={form.name} onChange={handleChange} />
+        <Input label="Title" name="title" value={form.title} onChange={handleChange} />
         <Input label="Brand" name="brand" value={form.brand} onChange={handleChange} />
 
         <div>
@@ -439,7 +439,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ data }) => {
         </div>
 
         <Input label="Price" name="price" type="number" value={form.price} onChange={handleChange} />
-        <Input label="Discount Price" name="discountPrice" type="number" value={form.discountPrice} onChange={handleChange} />
+        <Input label="Discount Price" name="discountedPrice" type="number" value={form.discountedPrice} onChange={handleChange} />
         <Input label="Stock" name="stock" type="number" value={form.stock} onChange={handleChange} />
 
         <Input label="Processor" name="processor" value={form.processor} onChange={handleChange} />
