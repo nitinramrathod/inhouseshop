@@ -28,8 +28,8 @@ export default function RootLayout({
   }, []);
 
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      <body>
+    // <html lang="en" suppressHydrationWarning={true}>
+      <div>
         {loading ? (
           <PreLoader />
         ) : (
@@ -52,7 +52,7 @@ export default function RootLayout({
             <Footer />
           </>
         )}
-      </body>
-    </html>
+      </div>
+    // </html>
   );
 }

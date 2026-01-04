@@ -18,6 +18,10 @@ const SingleItem = ({ item }) => {
     dispatch(
       addItemToCart({
         ...item,
+        title: item.title,
+        id: item._id,
+        discountedPrice: item?.discountedPrice,
+        images: item.images,
         quantity: 1,
       })
     );
