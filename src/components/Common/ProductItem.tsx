@@ -51,13 +51,12 @@ const ProductItem = ({ item }: { item: Product }) => {
     dispatch(updateproductDetails({ ...item }));
   };
 
-  const imageSRC =  item.images.length > 0 ? item.images[0]: "https://example.com/test.png";
+  const imageSRC =  item?.images?.length > 0 ? item?.images[0]: "https://example.com/test.png";
 
   return (
     <div className="group">
       <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-[#F6F7FB] min-h-[210px] mb-4">
        {imageSRC &&  <Image className="aspect-square object-cover" src={imageSRC} alt={item.title} width={210} height={210} />}
-        {/* <img className="aspect-square object-cover" src={imageSRC} alt="" /> */}
 
         <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2 pb-1 ease-linear duration-200 group-hover:translate-y-0">
           <button
@@ -99,7 +98,7 @@ const ProductItem = ({ item }: { item: Product }) => {
         className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5"
         onClick={() => handleProductDetails()}
       >
-        <Link href="/shop-details"> {item.title} </Link>
+        <Link href={`/laptops/product/${item._id}`}> {item.title} </Link>
       </h3>
 
       <span className="flex items-center gap-2 font-medium text-lg">
