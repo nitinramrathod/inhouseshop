@@ -38,7 +38,7 @@ const ProductSpecifications = ({ specifications }: ProductSpecificationsProps) =
         {specs.map((spec) => (
           <div
             key={spec.label}
-            className="flex justify-between border-b border-dashed border-slate-200 py-2 last:border-none"
+            className="flex justify-between border-b border-dashed border-slate-200 py-2 "
           >
             <span className="text-sm text-slate-500">
               {spec.label}
