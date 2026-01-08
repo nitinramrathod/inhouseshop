@@ -5,7 +5,7 @@ export const menuData: Menu[] = [
     id: 1,
     title: "Popular",
     newTab: false,
-    path: "/",
+    path: "/shop-without-sidebar",
   },
   {
     id: 2,
