@@ -1,7 +1,7 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useCallback, useRef, useEffect } from "react";
-import data from "./categoryData";
+// import data from "./categoryData";
 import Image from "next/image";
 
 // Import Swiper styles
@@ -9,8 +9,10 @@ import "swiper/css/navigation";
 import "swiper/css";
 import SingleItem from "./SingleItem";
 
-const Categories = () => {
+const Categories = ({data}:{data:any}) => {
   const sliderRef = useRef(null);
+
+  console.log("data category==>", data);
 
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return;

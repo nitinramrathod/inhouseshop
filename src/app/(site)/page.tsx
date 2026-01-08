@@ -78,6 +78,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage({ searchParams }: any) {
   const products = await serverFetch(`/api/v1/products`,{requireAuth: false});
+  const categories = await serverFetch(`/api/v1/categories`,{requireAuth: false});
 
-  return (<Home products={products} />);
+  return (<Home products={products} categories={categories} />);
 }
