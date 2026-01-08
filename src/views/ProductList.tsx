@@ -111,8 +111,8 @@ const ProductList = () => {
                     {isPending ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.map(item => {
                         return (
                             <tr key={item._id}>
-                                <td><NameDescriptionCell name={item.name} description={item.description} /></td>
-                                <td><img width="100" height='100' src={item?.images[0]} alt={item.name} /></td>
+                                <td><NameDescriptionCell name={item.title} description={item.description} /></td>
+                                <td><img width="100" height='100' src={item?.images[0]} alt={item.title} /></td>
                                 <td><SpecsCell specs={item.specifications} /></td>
                                 <td>
                                     <div>
@@ -124,7 +124,7 @@ const ProductList = () => {
                                 <td>{item.stock || '--'}</td>
                                 <td>
                                     <div className="flex px-4 py-3 gap-3 items-center mt-3">
-                                        <Link href={`/admin/reviews/${item._id}`} title={`View reviews of ${item.name}`}><MessageSquareText size={'1.2rem'} /></Link>
+                                        <Link href={`/admin/reviews/${item._id}`} title={`View reviews of ${item.title}`}><MessageSquareText size={'1.2rem'} /></Link>
                                         <Link href={`/admin/products/edit/${item._id}`} className="!px-2"><Pencil size={'1.2rem'} /></Link>                                        
                                         <button className="text-red" onClick={() => handleDelete(item._id)}><Trash size={'1.2rem'} /></button>
                                     </div>

@@ -109,7 +109,7 @@ const CategoryList = () => {
                             <tr key={item._id}>
                                 <td className="px-6 py-4">
                                     <div className="font-medium text-slate-900">
-                                        {item.name}
+                                        {item.title}
                                     </div>
                                     <div className="text-xs text-slate-500">
                                         ID: {item._id}
