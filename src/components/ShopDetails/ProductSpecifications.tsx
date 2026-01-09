@@ -41,9 +41,9 @@ const ProductSpecifications = ({ specifications }: ProductSpecificationsProps) =
             className="flex justify-between border-b border-dashed border-slate-200 py-2 "
           >
             <span className="text-sm text-slate-500">
-              {spec.label}
+              {spec.label}:
             </span>
-            <span className="text-sm font-medium text-slate-900">
+            <span className="text-sm font-medium text-slate-900 text-right">
               {spec.value}
             </span>
           </div>

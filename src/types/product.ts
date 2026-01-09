@@ -22,6 +22,8 @@ export type Product = {
   specifications?: LaptopSpecs;
   discountedPrice: number;
   discountPrice?: number;
+  averageRating?: number;
+  reviewCount?: number;
   sku?: string;
   stock?: number;  
   id: number;

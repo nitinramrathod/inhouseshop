@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import Link from "next/link";
 import Image from "next/image";
+import { Star } from "lucide-react";
+import Reviews from "./Reviews";
 
 const SingleGridItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
@@ -43,6 +45,8 @@ const SingleGridItem = ({ item }: { item: Product }) => {
       })
     );
   };
+
+  console.log('item==>', item)
 
   return (
     <div className="group">
@@ -114,45 +118,25 @@ const SingleGridItem = ({ item }: { item: Product }) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-2.5 mb-2">
+      <Reviews averageRating={item.averageRating} reviewCount={item.reviewCount}/>
+
+      {/* <div className="flex items-center gap-2.5 mb-2">
         <div className="flex items-center gap-1">
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
+          {
+            Array.from({ length: 5 }).map((_, i) => {
+              const isField = i < item.averageRating;
+              return (
+                <Star strokeWidth={2.75} key={`review_${i}`} size={'1rem'} className={isField ? "text-yellow" :"text-gray-400" } />
+              )
+            })
+          }  
         </div>
 
-        <p className="text-custom-sm">({item.reviews})</p>
-      </div>
+        {item.reviewCount > 0 && <p className="text-custom-sm">( {item.reviewCount} )</p>}
+      </div> */}
 
       <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
-        <Link href={`/laptops/product/${item._id}`}> {item.title} </Link>
+        <Link href={`/products/laptop/${item._id}`}> {item.title} </Link>
       </h3>
 
       <span className="flex items-center gap-2 font-medium text-lg">
