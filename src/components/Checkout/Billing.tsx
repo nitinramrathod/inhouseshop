@@ -1,13 +1,23 @@
-import React from "react";
+import { Heading1 } from "lucide-react";
+import React, { useState } from "react";
+import AddressSelectCard from "./AddressSelectCard";
 
-const Billing = () => {
+const Billing = ({ addresses, selectedAddress, handleAddressSelect }) => {
+
   return (
     <div className="mt-9">
       <h2 className="font-medium text-dark text-xl sm:text-2xl mb-5.5">
         Billing details
       </h2>
 
-      <div className="bg-white shadow-1 rounded-[10px] p-4 sm:p-8.5">
+      {addresses ? (
+        <AddressSelectCard
+          selectedAddressId={selectedAddress}
+          onSelect={handleAddressSelect}
+          addresses={addresses}
+        />
+
+      ) : (<div className="bg-white shadow-1 rounded-[10px] p-4 sm:p-8.5">
         <div className="flex flex-col lg:flex-row gap-5 sm:gap-8 mb-5">
           <div className="w-full">
             <label htmlFor="firstName" className="block mb-2.5">
@@ -18,6 +28,7 @@ const Billing = () => {
               type="text"
               name="firstName"
               id="firstName"
+              // value={fullName}
               placeholder="Jhon"
               className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
             />
@@ -38,7 +49,7 @@ const Billing = () => {
           </div>
         </div>
 
-        <div className="mb-5">
+        {/* <div className="mb-5">
           <label htmlFor="companyName" className="block mb-2.5">
             Company Name
           </label>
@@ -49,7 +60,7 @@ const Billing = () => {
             id="companyName"
             className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
           />
-        </div>
+        </div> */}
 
         <div className="mb-5">
           <label htmlFor="countryName" className="block mb-2.5">
@@ -59,8 +70,8 @@ const Billing = () => {
 
           <div className="relative">
             <select className="w-full bg-gray-1 rounded-md border border-gray-3 text-dark-4 py-3 pl-5 pr-9 duration-200 appearance-none outline-none focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20">
-              <option value="0">Australia</option>
-              <option value="1">America</option>
+              {/* <option selected value={`${address.country}`}>{`${address.country}`}</option> */}
+              {/* {/* <option value="1">America</option> */}
               <option value="2">England</option>
             </select>
 
@@ -94,6 +105,7 @@ const Billing = () => {
             type="text"
             name="address"
             id="address"
+            //  value={addressLine1}
             placeholder="House number and street name"
             className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
           />
@@ -103,6 +115,7 @@ const Billing = () => {
               type="text"
               name="address"
               id="addressTwo"
+              // value={addressLine2}
               placeholder="Apartment, suite, unit, etc. (optional)"
               className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
             />
@@ -117,20 +130,36 @@ const Billing = () => {
           <input
             type="text"
             name="town"
+            // value={city}
             id="town"
             className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
           />
         </div>
 
         <div className="mb-5">
-          <label htmlFor="country" className="block mb-2.5">
-            Country
+          <label htmlFor="state" className="block mb-2.5">
+            State
           </label>
 
           <input
             type="text"
-            name="country"
-            id="country"
+            name="state"
+            // value={state}
+            id="state"
+            className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+          />
+        </div>
+
+        <div className="mb-5">
+          <label htmlFor="pincode" className="block mb-2.5">
+            Pincode
+          </label>
+
+          <input
+            type="text"
+            name="pincode"
+            // value={pincode}
+            id="pincode"
             className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
           />
         </div>
@@ -144,6 +173,7 @@ const Billing = () => {
             type="text"
             name="phone"
             id="phone"
+            // value={phone}
             className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
           />
         </div>
@@ -202,7 +232,9 @@ const Billing = () => {
             Create an Account
           </label>
         </div>
-      </div>
+      </div>)}
+
+
     </div>
   );
 };

@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
-const PaymentMethod = () => {
-  const [payment, setPayment] = useState("bank");
+type PaymentMethodProps = {
+  value: "BANK" | "COD" | "PAYPAL";
+  onChange: (method: "BANK" | "COD" | "PAYPAL") => void;
+};
+
+const PaymentMethod = ({ value, onChange }: PaymentMethodProps) => {
+  
   return (
     <div className="bg-white shadow-1 rounded-[10px] mt-7.5">
       <div className="border-b border-gray-3 py-5 px-4 sm:px-8.5">
@@ -21,11 +26,11 @@ const PaymentMethod = () => {
                 name="bank"
                 id="bank"
                 className="sr-only"
-                onChange={() => setPayment("bank")}
+                onChange={() => onChange("BANK")}
               />
               <div
                 className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                  payment === "bank"
+                  value === "BANK"
                     ? "border-4 border-blue"
                     : "border border-gray-4"
                 }`}
@@ -34,7 +39,7 @@ const PaymentMethod = () => {
 
             <div
               className={`rounded-md border-[0.5px] py-3.5 px-5 ease-out duration-200 hover:bg-gray-2 hover:border-transparent hover:shadow-none ${
-                payment === "bank"
+                value === "BANK"
                   ? "border-transparent bg-gray-2"
                   : " border-gray-4 shadow-1"
               }`}
@@ -61,11 +66,11 @@ const PaymentMethod = () => {
                 name="cash"
                 id="cash"
                 className="sr-only"
-                onChange={() => setPayment("cash")}
+                onChange={() => onChange("COD")}
               />
               <div
                 className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                  payment === "cash"
+                  value === "COD"
                     ? "border-4 border-blue"
                     : "border border-gray-4"
                 }`}
@@ -74,7 +79,7 @@ const PaymentMethod = () => {
 
             <div
               className={`rounded-md border-[0.5px] py-3.5 px-5 ease-out duration-200 hover:bg-gray-2 hover:border-transparent hover:shadow-none min-w-[240px] ${
-                payment === "cash"
+                value === "COD"
                   ? "border-transparent bg-gray-2"
                   : " border-gray-4 shadow-1"
               }`}
@@ -101,11 +106,11 @@ const PaymentMethod = () => {
                 name="paypal"
                 id="paypal"
                 className="sr-only"
-                onChange={() => setPayment("paypal")}
+                onChange={() => onChange("PAYPAL")}
               />
               <div
                 className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                  payment === "paypal"
+                  value === "PAYPAL"
                     ? "border-4 border-blue"
                     : "border border-gray-4"
                 }`}
@@ -113,7 +118,7 @@ const PaymentMethod = () => {
             </div>
             <div
               className={`rounded-md border-[0.5px] py-3.5 px-5 ease-out duration-200 hover:bg-gray-2 hover:border-transparent hover:shadow-none min-w-[240px] ${
-                payment === "paypal"
+                value === "PAYPAL"
                   ? "border-transparent bg-gray-2"
                   : " border-gray-4 shadow-1"
               }`}

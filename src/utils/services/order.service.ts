@@ -22,7 +22,7 @@ export type CreateOrderPayload = {
     country?: string
     pincode: string
   }
-  paymentMethod: 'COD' | 'ONLINE'
+  paymentMethod: 'COD' | 'ONLINE'| "BANK" | "PAYPAL"
   guestId?: string              // guest checkout
 }
 

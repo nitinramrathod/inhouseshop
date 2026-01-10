@@ -5,16 +5,21 @@ import Image from "next/image";
 import Newsletter from "../Common/Newsletter";
 import RecentlyViewdItems from "./RecentlyViewd";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
-import { useAppSelector } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
 import ProductSpecifications from "./ProductSpecifications";
 import { CircleCheck, Fullscreen } from "lucide-react";
 import Reviews from "../Shop/Reviews";
+import { setBuyNow } from "@/redux/features/purchase-slice";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const ShopDetails = ({data}:any) => { 
   const { openPreviewModal } = usePreviewSlider();
   const [previewImg, setPreviewImg] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("tabOne");
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter()
 
   const tabs = [
     {
@@ -46,6 +51,31 @@ const ShopDetails = ({data}:any) => {
   const handlePreviewSlider = () => {
     openPreviewModal();
   };
+
+  const handleBuyNow = () => {
+    const buyNowData = {
+      type: "BUY_NOW",
+      id: data._id as string,
+      title: data.title as string,
+      price: data.price as number,
+      discountedPrice: data.discountedPrice as number,
+      image: data.image as string,
+      quantity,
+    };
+
+    // Redux
+    dispatch(setBuyNow(buyNowData));
+
+    // localStorage (backup)
+    localStorage.setItem("buy_now", JSON.stringify(buyNowData));
+
+    // Navigate
+    router.push("/checkout");
+  };
+
+  
+
+
 
 
   if(!data){
@@ -463,12 +493,19 @@ const ShopDetails = ({data}:any) => {
                         </button>
                       </div>
 
-                      <a
+                      {/* <a
                         href="#"
                         className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
                       >
                         Purchase Now
-                      </a>
+                      </a> */}
+                      <button 
+                      className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
+                      onClick={handleBuyNow}>
+                        Buy Now
+                      </button>
+
+
 
                       <a
                         href="#"
