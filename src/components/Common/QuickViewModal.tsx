@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { AppDispatch, RootState, useAppSelector } from "@/redux/store";
-import { addItemToCart } from "@/redux/features/cart-slice";
+import { addItemToCartLocal } from "@/redux/features/cart-slice";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
@@ -34,12 +34,12 @@ const QuickViewModal = () => {
   // add to cart
   const handleAddToCart = () => {
     dispatch(
-      addItemToCart({
+      addItemToCartLocal({
         ...product,
         title: product.name,
         id: product._id,
         discountedPrice: product?.discountPrice,
-        images: product.images,
+        image: product.images[0],
         quantity,
       })
     );

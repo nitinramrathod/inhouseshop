@@ -15,7 +15,7 @@ export const cartService = {
    * Get cart (guest or user)
    */
   getCart: async () => {
-    const res = await publicAxios.get('/api/v1/cart')
+    const res = await protectedAxios.get('/api/v1/carts')
     return res.data
   },
 
@@ -23,7 +23,7 @@ export const cartService = {
    * Add item to cart
    */
   addToCart: async (payload: AddToCartPayload) => {
-    const res = await publicAxios.post('/api/v1/cart/items', payload)
+    const res = await protectedAxios.post('/api/v1/carts', payload)
     return res.data
   },
 

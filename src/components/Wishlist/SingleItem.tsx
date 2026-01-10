@@ -3,7 +3,7 @@ import { AppDispatch } from "@/redux/store";
 import { useDispatch } from "react-redux";
 
 import { removeItemFromWishlist } from "@/redux/features/wishlist-slice";
-import { addItemToCart } from "@/redux/features/cart-slice";
+import { addItemToCartLocal } from "@/redux/features/cart-slice";
 
 import Image from "next/image";
 
@@ -16,12 +16,12 @@ const SingleItem = ({ item }) => {
 
   const handleAddToCart = () => {
     dispatch(
-      addItemToCart({
+      addItemToCartLocal({
         ...item,
         title: item.title,
         id: item._id,
         discountedPrice: item?.discountedPrice,
-        images: item.images,
+        image: item.image[0],
         quantity: 1,
       })
     );

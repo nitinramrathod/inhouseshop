@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { updateQuickView } from "@/redux/features/quickView-slice";
-import { addItemToCart } from "@/redux/features/cart-slice";
+import { addItemToCartLocal, setCartFromBackend } from "@/redux/features/cart-slice";
 import { addItemToWishlist } from "@/redux/features/wishlist-slice";
 import { updateproductDetails } from "@/redux/features/product-details";
 import { useDispatch } from "react-redux";
@@ -12,9 +12,12 @@ import { AppDispatch } from "@/redux/store";
 import Link from "next/link";
 import Rating from "./Rating";
 import { eye_icon, while_heart_icon } from "@/assets/icons/common";
+import { cartService } from "@/utils/services/cart.service";
+import { useSession } from "next-auth/react";
 
 const ProductItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
+   const { data: session} = useSession();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -24,17 +27,30 @@ const ProductItem = ({ item }: { item: Product }) => {
   };
 
   // add to cart
-  const handleAddToCart = () => {
+  const handleAddToCart = async() => {
     dispatch(
-      addItemToCart({
+      addItemToCartLocal({
         ...item,
         title: item.title,
         id: item._id,
         discountedPrice: item?.discountedPrice,
-        images: item.images,
+        image: item.images[0],
         quantity: 1,
       })
     );
+
+    if (!session) return;
+
+    try {
+      const { data } = await cartService.addToCart({
+        productId: item._id,
+        quantity: 1,
+      });
+
+      dispatch(setCartFromBackend(data.items));
+    } catch (err) {
+      console.error("Cart sync failed", err);
+    }
   };
 
   const handleItemToWishList = () => {

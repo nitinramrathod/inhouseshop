@@ -3,7 +3,7 @@ import React from "react";
 import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { updateQuickView } from "@/redux/features/quickView-slice";
-import { addItemToCart } from "@/redux/features/cart-slice";
+import { addItemToCartLocal } from "@/redux/features/cart-slice";
 import { addItemToWishlist } from "@/redux/features/wishlist-slice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
@@ -25,12 +25,12 @@ const SingleGridItem = ({ item }: { item: Product }) => {
   // add to cart
   const handleAddToCart = () => {
     dispatch(
-      addItemToCart({
+      addItemToCartLocal({
         ...item,
         title: item.title,
         id: item._id,
         discountedPrice: item?.discountedPrice,
-        images: item.images,
+        image: item.images[0],
         quantity: 1,
       })
     );

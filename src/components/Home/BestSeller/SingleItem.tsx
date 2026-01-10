@@ -5,7 +5,7 @@ import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { updateQuickView } from "@/redux/features/quickView-slice";
-import { addItemToCart } from "@/redux/features/cart-slice";
+import { addItemToCartLocal } from "@/redux/features/cart-slice";
 import Image from "next/image";
 import Link from "next/link";
 import { addItemToWishlist } from "@/redux/features/wishlist-slice";
@@ -23,12 +23,12 @@ const SingleItem = ({ item }: { item: Product }) => {
   // add to cart
   const handleAddToCart = () => {
     dispatch(
-      addItemToCart({
+      addItemToCartLocal({
         ...item,
         title: item.title,
         id: item._id,
         discountedPrice: item?.discountedPrice,
-        images: item.images,
+        image: item.images[0],
         
         quantity: 1,
       })

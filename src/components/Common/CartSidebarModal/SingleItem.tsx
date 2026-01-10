@@ -3,11 +3,11 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import Image from "next/image";
 
-const SingleItem = ({ item, removeItemFromCart }) => {
+const SingleItem = ({ item, removeItemFromCartLocal }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleRemoveFromCart = () => {
-    dispatch(removeItemFromCart(item.id));
+    dispatch(removeItemFromCartLocal(item.id));
   };
 
   console.log('item==>', item)
