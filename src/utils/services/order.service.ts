@@ -11,8 +11,7 @@ export type OrderItemPayload = {
 
 export type CreateOrderPayload = {
   items: OrderItemPayload[]
-  addressId?: string            // logged-in user
-  guestAddress?: {
+  shippingAddress?: {
     fullName: string
     phone: string
     addressLine1: string
@@ -23,7 +22,8 @@ export type CreateOrderPayload = {
     pincode: string
   }
   paymentMethod: 'COD' | 'ONLINE'| "BANK" | "PAYPAL"
-  guestId?: string              // guest checkout
+  guestId?: string
+  // paymentStatus?: "PENDING" | "PAID" | "FAILED"   
 }
 
 export type OrderQueryParams = {

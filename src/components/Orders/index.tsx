@@ -2,26 +2,26 @@ import React, { useEffect, useState } from "react";
 import SingleOrder from "./SingleOrder";
 import ordersData from "./ordersData";
 
-const Orders = () => {
-  const [orders, setOrders] = useState<any>([]);
+const Orders = ({orders}) => {
+  // const [orders, setOrders] = useState<any>([]);
 
-  useEffect(() => {
-    fetch(`/api/order`)
-      .then((res) => res.json())
-      .then((data) => {
-        setOrders(data.orders);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`/api/order`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setOrders(data.orders);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.message);
+  //     });
+  // }, []);
 
   return (
     <>
       <div className="w-full overflow-x-auto">
         <div className="min-w-[770px]">
           {/* <!-- order item --> */}
-          {ordersData.length > 0 && (
+          {orders?.data?.length > 0 && (
             <div className="items-center justify-between py-4.5 px-7.5 hidden md:flex ">
               <div className="min-w-[111px]">
                 <p className="text-custom-sm text-dark">Order</p>
@@ -47,8 +47,8 @@ const Orders = () => {
               </div>
             </div>
           )}
-          {ordersData.length > 0 ? (
-            ordersData.map((orderItem, key) => (
+          {orders?.data?.length > 0 ? (
+            orders?.data?.map((orderItem, key) => (
               <SingleOrder key={key} orderItem={orderItem} smallView={false} />
             ))
           ) : (
@@ -58,10 +58,10 @@ const Orders = () => {
           )}
         </div>
 
-        {ordersData.length > 0 &&
-          ordersData.map((orderItem, key) => (
+        {/* {orders?.data?.length > 0 &&
+          orders?.data?.map((orderItem, key) => (
             <SingleOrder key={key} orderItem={orderItem} smallView={true} />
-          ))}
+          ))} */}
       </div>
     </>
   );

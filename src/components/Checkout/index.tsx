@@ -14,17 +14,18 @@ import { useOrderMutations } from "@/utils/hooks/order";
 import { CreateOrderPayload } from "@/utils/services/order.service";
 import { useDispatch } from "react-redux";
 import { clearBuyNow } from "@/redux/features/purchase-slice";
+import MailSuccess from "../MailSuccess";
 
 const Checkout = () => {
   const router = useRouter();
   const { data, isPending } = useUserInfo();
   const { createOrder } = useOrderMutations()
-  const [selectedAddress, setSelectedAddress] = useState('1');
-const dispatch = useDispatch<AppDispatch>();
+  const [selectedAddressId, setSelectedAddressId] = useState();
+  const [selectedAddress, setSelectedAddress] = useState();
+  const dispatch = useDispatch<AppDispatch>();
+  const [orderCreated, setOrderCreated]= useState(false);
 
-  const [paymentMethod, setPaymentMethod] = useState<
-    "BANK" | "COD" | "PAYPAL"
-  >("COD");
+  const [paymentMethod, setPaymentMethod] = useState<"BANK" | "COD" | "PAYPAL">("COD");
 
   const buyNowFromRedux = useAppSelector((s) => s.purchaseReducer.buyNow);
 
@@ -37,11 +38,9 @@ const dispatch = useDispatch<AppDispatch>();
     image: ""
   });
 
-
-
   const handleAddressSelect = (address: any) => {
-    console.log(address)
-    setSelectedAddress('2');
+    setSelectedAddressId(address?._id);
+    setSelectedAddress(address);
   }
 
   useEffect(() => {
@@ -63,6 +62,7 @@ const dispatch = useDispatch<AppDispatch>();
         productId: buyNow.id,
         quantity: buyNow.quantity
       }],
+      shippingAddress: selectedAddress,
       paymentMethod
     };
 
@@ -73,18 +73,31 @@ const dispatch = useDispatch<AppDispatch>();
       onSuccess: (e: any) => {
         localStorage.removeItem('buy_now');
         dispatch(clearBuyNow());
+        setOrderCreated(true);
 
-        router.push('/order-created')
+        setTimeout(() => {
+          setOrderCreated(false)
+          router.push('/products');
+        }, 3000);
       }
     })
   }
+
+  useEffect(() => {
+    const defaultAddress = data?.addresses?.find(item => item?.isDefault);
+    setSelectedAddressId(defaultAddress?._id);
+    setSelectedAddress(defaultAddress);
+
+  }, [data])
 
 
 
   return (
     <>
       <Breadcrumb title={"Checkout"} pages={["checkout"]} />
-      <section className="overflow-hidden pt-30 py-20 bg-gray-2">
+      {orderCreated ? (<MailSuccess heading="Your Order Created Successfully."/>):      
+      
+      (<section className="overflow-hidden pt-30 py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <form>
             <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-11">
@@ -95,7 +108,7 @@ const dispatch = useDispatch<AppDispatch>();
 
                 {/* <!-- billing details --> */}
                 <Billing
-                  selectedAddress={selectedAddress}
+                  selectedAddress={selectedAddressId}
                   handleAddressSelect={handleAddressSelect}
                   addresses={data?.addresses}
                 />
@@ -131,41 +144,56 @@ const dispatch = useDispatch<AppDispatch>();
                     </h3>
                   </div>
 
-                  <div className="pt-2.5 pb-8.5 px-4 sm:px-8.5">
-                    {/* <!-- title --> */}
-                    <div className="flex items-center justify-between py-5 border-b border-gray-3">
-                      <div>
-                        <h4 className="font-medium text-dark">Product</h4>
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-dark text-right">
-                          Subtotal
-                        </h4>
-                      </div>
-                    </div>
 
-                    {/* <!-- product item --> */}
-                    <div className="flex items-center justify-between py-5 border-b border-gray-3">
-                      <div>
-                        <p className="text-dark">{buyNow?.title}</p>
-                      </div>
-                      <div>
-                        <p className="text-dark text-right">₹{buyNow?.discountedPrice}</p>
-                      </div>
-                    </div>
 
-                    {/* <!-- total --> */}
-                    <div className="flex items-center justify-between pt-5">
-                      <div>
-                        <p className="font-medium text-lg text-dark">Total</p>
-                      </div>
-                      <div>
-                        <p className="font-medium text-lg text-dark text-right">
-                          ₹ {buyNow.discountedPrice}
-                        </p>
-                      </div>
-                    </div>
+                  <div className="pt-2.5 pb-8.5 px-4 sm:px-8.5 overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="border-b border-gray-3">
+                          <th className="py-5 text-left font-medium text-dark">
+                            Product
+                          </th>
+                          <th className="py-5 text-center font-medium text-dark">
+                            Qty
+                          </th>
+                          <th className="py-5 text-right font-medium text-dark">
+                            Subtotal
+                          </th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {/* Product Row */}
+                        <tr className="border-b border-gray-3">
+                          <td className="py-5 text-dark">
+                            {buyNow?.title}
+                          </td>
+
+                          <td className="py-5 text-center text-dark">
+                            {buyNow?.quantity}
+                          </td>
+
+                          <td className="py-5 text-right text-dark">
+                            ₹{buyNow?.discountedPrice}
+                          </td>
+                        </tr>
+
+                        {/* Total Row */}
+                        <tr>
+                          <td className="pt-5 font-medium text-lg text-dark">
+                            Total
+                          </td>
+
+                          <td></td>
+
+                          <td className="pt-5 text-right font-medium text-lg text-dark">
+                            ₹{Number(buyNow?.discountedPrice) * Number(buyNow.quantity)}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
+
                 </div>
 
                 {/* <!-- coupon box --> */}
@@ -192,7 +220,7 @@ const dispatch = useDispatch<AppDispatch>();
             </div>
           </form>
         </div>
-      </section>
+      </section>)}
     </>
   );
 };

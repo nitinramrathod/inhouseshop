@@ -63,13 +63,10 @@ const ShopDetails = ({data}:any) => {
       quantity,
     };
 
-    // Redux
     dispatch(setBuyNow(buyNowData));
 
-    // localStorage (backup)
     localStorage.setItem("buy_now", JSON.stringify(buyNowData));
 
-    // Navigate
     router.push("/checkout");
   };
 

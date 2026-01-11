@@ -34,7 +34,7 @@ const OrderModal = ({ showDetails, showEdit, toggleModal, order }: any) => {
           <>
             {showDetails && <OrderDetails orderItem={order} />}
 
-            {showEdit && <EditOrder order={order} toggleModal={toggleModal} />}
+            {/* {showEdit && <EditOrder order={order} toggleModal={toggleModal} />} */}
           </>
         </div>
       </div>

@@ -4,10 +4,17 @@ import Breadcrumb from "../Common/Breadcrumb";
 import Image from "next/image";
 import AddressModal from "./AddressModal";
 import Orders from "../Orders";
+import { useSession } from "next-auth/react";
+import { useOrders } from "@/utils/hooks/order";
 
 const MyAccount = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [addressModal, setAddressModal] = useState(false);
+   const { data, status } = useSession()
+
+   const {data:orders, isPending} = useOrders({mine:true});
+
+   console.log('orders, ==>', orders)
 
   const openAddressModal = () => {
     setAddressModal(true);
@@ -39,7 +46,7 @@ const MyAccount = () => {
 
                   <div>
                     <p className="font-medium text-dark mb-0.5">
-                      James Septimus
+                      {data.user.name}
                     </p>
                     <p className="text-custom-xs">Member Since Sep 2020</p>
                   </div>
@@ -285,7 +292,7 @@ const MyAccount = () => {
                 activeTab === "orders" ? "block" : "hidden"
               }`}
             >
-              <Orders />
+              <Orders orders={orders}/>
             </div>
             {/* <!-- orders tab content end -->
 

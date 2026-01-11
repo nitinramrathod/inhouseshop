@@ -12,11 +12,6 @@ const OrderList = () => {
     const { data, isPending, refetch } = useOrders({ mine: false });
     const { deleteOrder } = useOrderMutations();
 
-
-    const goToEdit = (id) => {
-        router.push(`/admin/products/${id}`)
-    }
-
     const handleDelete = async (id: string) => {
         deleteOrder.mutate(id, {
             onError: (err: any) => {
@@ -28,7 +23,7 @@ const OrderList = () => {
         });
     }
 
-    const HEADERS = ['Product', 'Buyer', 'Total', 'Order Status', 'Payment', 'Payment Method', 'Order Date', 'Is Deleted', 'Action'];
+    const HEADERS = ['Product', 'Buyer', 'Address', 'Total', 'Order Status', 'Payment', 'Payment Method', 'Order Date', 'Is Deleted', 'Action'];
 
     return (
 
@@ -46,7 +41,7 @@ const OrderList = () => {
                                     <ul className="space-y-1">
                                         {item.items.map((item: any, idx: number) => (
                                             <li key={idx} className="text-slate-700">
-                                                <span className="font-medium">{item?.product?.name || "--"}</span>
+                                                <span className="font-medium">{item?.product?.title || "--"}</span>
                                                 <span className="text-slate-500"> × {item?.quantity || "--"}</span>
                                             </li>
                                         ))}
@@ -59,9 +54,32 @@ const OrderList = () => {
                                         {item.user?.email || "Guest"}
                                     </div>
                                     <div className="text-xs text-slate-500">
-                                        {item.shippingAddress?.country}
+                                        {item.user?.firstName} {item.user?.lastName}
                                     </div>
                                 </td>
+
+                                <td className="px-4 py-3 text-sm max-w-xs">
+                                    <div className="font-medium text-slate-800">
+                                        {item.shippingAddress?.fullName || "Guest"}
+                                    </div>
+
+                                    <div className="text-xs text-slate-500 mt-1 leading-relaxed">
+                                        {item.shippingAddress?.addressLine1},
+                                        {item.shippingAddress?.addressLine2 && (
+                                            <> {item.shippingAddress.addressLine2},</>
+                                        )}
+                                        <br />
+                                        {item.shippingAddress?.city}, {item.shippingAddress?.state} -{" "}
+                                        {item.shippingAddress?.pincode}
+                                        <br />
+                                        {item.shippingAddress?.country}
+                                    </div>
+
+                                    <div className="text-xs text-slate-600 mt-1">
+                                        📞 {item.shippingAddress?.phone}
+                                    </div>
+                                </td>
+
 
                                 {/* Total */}
                                 <td className="px-4 py-3 text-sm font-semibold text-slate-900">
@@ -105,10 +123,10 @@ const OrderList = () => {
                                 <td className="px-4 py-3 text-sm text-slate-600">
                                     {formatDateTime(item.createdAt)}
                                 </td>
-                                
+
                                 {/* Date */}
                                 <td className="px-4 py-3 text-sm text-slate-600">
-                                    {item.isDeleted ? <p className="text-red">Deleted</p>: <p className="text-green">Active</p>}
+                                    {item.isDeleted ? <p className="text-red">Deleted</p> : <p className="text-green">Active</p>}
                                 </td>
 
                                 {/* Action */}
