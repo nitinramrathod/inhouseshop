@@ -76,3 +76,35 @@ export const addToCart =
     }
   };
 
+
+//   export const clearCart =
+//   () =>
+//   async (dispatch, getState) => {
+
+//     dispatch(clearCartLocal());
+
+//     const { session } = getState().auth;
+
+//     if (session) {
+//       await cartService.clearCart();
+//     } else {
+//       clearGuestCart();
+//     }
+//   };
+// export const removeFromCart =
+//   (id) =>
+//   async (dispatch, getState) => {
+
+//     dispatch(removeItemLocal(id));
+
+//     const { session } = getState().auth;
+
+//     if (session) {
+//       await cartService.removeItem(id);
+//     } else {
+//       const cart = getGuestCart().filter(i => i.id !== id);
+//       setGuestCart(cart);
+//     }
+//   };
+
+
