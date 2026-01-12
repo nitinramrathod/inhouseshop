@@ -16,6 +16,7 @@ import PreviewSliderModal from "@/components/Common/PreviewSlider";
 import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
 import AuthInitializer from "@/utils/providers/AuthInitializer";
+import AuthSync from "@/utils/providers/AuthSync";
 
 export default function RootLayout({
   children,
@@ -39,7 +40,10 @@ export default function RootLayout({
               <CartModalProvider>
                 <ModalProvider>
                   <PreviewSliderProvider>
-                    <AuthInitializer/>
+
+                    <AuthInitializer/> 
+                    <AuthSync/>
+                    
                     <Header />
                     {children}
 

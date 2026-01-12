@@ -52,6 +52,8 @@ const ShopDetails = ({data}:any) => {
     openPreviewModal();
   };
 
+  console.log('data from product detail', data)
+
   const handleBuyNow = () => {
     const buyNowData : BuyNowPayload= [{
       type: "BUY_NOW",
@@ -59,7 +61,7 @@ const ShopDetails = ({data}:any) => {
       title: data.title as string,
       price: data.price as number,
       discountedPrice: data.discountedPrice as number,
-      image: data.image as string,
+      image: data.images[0] as string,
       quantity,
     }];
 

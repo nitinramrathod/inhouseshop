@@ -20,6 +20,10 @@ export const useUserInfo = () => {
 
    const { data, status } = useSession()
 
+   if(status == 'unauthenticated'){
+    return {data:null}
+   }
+
    const {id=null} = data?.user;
 
    if(!id){

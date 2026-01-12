@@ -4,13 +4,14 @@ import { RootState } from "../store";
 
 export const selectCartItems = (state: RootState) => state.cartReducer.items;
 
-export const selectTotalPrice = createSelector([selectCartItems], (items) => {
-  return items.reduce((total, item) => {
-    return total + item.discountedPrice * item.quantity;
-  }, 0);
+export const selectTotalPrice = createSelector([selectCartItems], (items) => { 
+  console.log('====>', items) 
+  return Array.isArray(items) ? items?.reduce((total, item) => {
+    return total + item?.discountedPrice * item?.quantity;
+  }, 0): [];  
 });
 
-type CartItem = {
+export type CartItem = {
   id: string;
   title: string;
   price: number;
@@ -32,10 +33,13 @@ export const cart = createSlice({
   initialState,
   reducers: {
     setCartFromBackend: (state, action: PayloadAction<CartItem[]>) => {
+
+      console.log('action from setCartFromBackend==>', action.payload)
       state.items = action.payload;
     },
 
     addItemToCartLocal: (state, action: PayloadAction<CartItem>) => {
+      console.log('state.items', state.items)
       const existing = state.items.find(
         (item) => item.id === action.payload.id
       );

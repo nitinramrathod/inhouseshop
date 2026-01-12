@@ -9,21 +9,23 @@ import { cartService } from "../services/cart.service";
 const AuthInitializer = () => {
   const dispatch = useDispatch();
   const { data: session, status } = useSession();
-  const hasFetchedCart = useRef(false);
-
 
   const token = session?.accessToken;
 
   useEffect(() => {
-    if (status !== "authenticated" || !token) return;
-    if (hasFetchedCart.current) return;
+    if (status !== "authenticated" || !token) {
+      const carts = localStorage.getItem('cart') && JSON.parse(localStorage.getItem('cart'));
 
-    cartService
-      .getCart()
-      .then((res) => {
-        dispatch(setCartFromBackend(res.data.items));
-      })
-      .catch(console.error);
+      if (carts) dispatch(setCartFromBackend(carts));
+
+    } else {
+      cartService
+        .getCart()
+        .then((res) => {
+          dispatch(setCartFromBackend(res.data.items));
+        })
+        .catch(console.error);
+    };
   }, [status, token, dispatch]);
 
   return null;

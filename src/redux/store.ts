@@ -5,6 +5,7 @@ import cartReducer from "./features/cart-slice";
 import wishlistReducer from "./features/wishlist-slice";
 import purchaseReducer from "./features/purchase-slice";
 import productDetailsReducer from "./features/product-details";
+import auth from "./features/auth-slice";
 
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 
@@ -14,6 +15,7 @@ export const store = configureStore({
     cartReducer,
     wishlistReducer,
     purchaseReducer,
+    auth,
     productDetailsReducer,
   },
 });

@@ -25,6 +25,7 @@ const Header = () => {
 
   const { openCartModal } = useCartModalContext();
   const product = useAppSelector((state) => state.cartReducer.items);
+
   const totalPrice = useSelector(selectTotalPrice);
 
    const [dashboard, setDashboard] = useState({
@@ -260,7 +261,7 @@ const Header = () => {
                     </svg>
 
                     <span className="flex items-center justify-center font-medium text-2xs absolute -right-2 -top-2.5 bg-blue w-4.5 h-4.5 rounded-full text-white">
-                      {product.length}
+                      {product?.length}
                     </span>
                   </span>
 

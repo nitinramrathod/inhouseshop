@@ -19,15 +19,13 @@ import { removeAllItemsFromCart } from "@/redux/features/cart-slice";
 
 const Checkout = () => {
   const router = useRouter();
-  const { data, isPending } = useUserInfo();
+  const { data } = useUserInfo();
   const { createOrder } = useOrderMutations()
   const [selectedAddressId, setSelectedAddressId] = useState();
   const [selectedAddress, setSelectedAddress] = useState();
   const dispatch = useDispatch<AppDispatch>();
   const [orderCreated, setOrderCreated]= useState(false);
-
   const [paymentMethod, setPaymentMethod] = useState<"BANK" | "COD" | "PAYPAL">("COD");
-
   const buyNowFromRedux = useAppSelector((s) => s.purchaseReducer.checkout);
 
   const [buyNow, setBuyNow] = useState({
