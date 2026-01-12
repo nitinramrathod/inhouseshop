@@ -15,6 +15,7 @@ import { CreateOrderPayload } from "@/utils/services/order.service";
 import { useDispatch } from "react-redux";
 import { clearCheckout } from "@/redux/features/purchase-slice";
 import MailSuccess from "../MailSuccess";
+import { removeAllItemsFromCart } from "@/redux/features/cart-slice";
 
 const Checkout = () => {
   const router = useRouter();
@@ -32,6 +33,7 @@ const Checkout = () => {
   const [buyNow, setBuyNow] = useState({
     items:[{
     id: "",
+    type: "",
     title: "",
     price: 0,
     discountedPrice: 0,
@@ -78,9 +80,16 @@ const Checkout = () => {
         console.log('error==>', e)
       },
       onSuccess: (e: any) => {
-        localStorage.removeItem('checkout');
-        dispatch(clearCheckout());
+
         setOrderCreated(true);
+        localStorage.removeItem('checkout');
+        
+        if(buyNow.items[0].type == 'CART'){
+          dispatch(removeAllItemsFromCart());
+          console.log('Clear cart from backend ==>')
+        }else{
+          dispatch(clearCheckout());
+        }      
 
         setTimeout(() => {
           setOrderCreated(false)
@@ -96,8 +105,6 @@ const Checkout = () => {
     setSelectedAddress(defaultAddress);
 
   }, [data])
-
-
 
   return (
     <>

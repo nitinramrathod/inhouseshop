@@ -11,12 +11,15 @@ import { useSelector } from "react-redux";
 import SingleItem from "./SingleItem";
 import Link from "next/link";
 import EmptyCart from "./EmptyCart";
+import { routeModule } from "next/dist/build/templates/pages";
+import { useRouter } from "next/navigation";
 
 const CartSidebarModal = () => {
   const { isCartModalOpen, closeCartModal } = useCartModalContext();
   const cartItems = useAppSelector((state) => state.cartReducer.items);
 
   const totalPrice = useSelector(selectTotalPrice);
+  const route = useRouter()
 
   useEffect(() => {
     // closing modal while clicking outside
@@ -34,6 +37,14 @@ const CartSidebarModal = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isCartModalOpen, closeCartModal]);
+
+  console.log('cartItems==>', cartItems);
+
+  const handleCheckout =()=>{
+    const formatedItems =  cartItems.map(item=>({...item,type:'CART'}))
+    localStorage.setItem('checkout', JSON.stringify(formatedItems));
+    route.push('/checkout');
+  }
 
   return (
     <div
@@ -107,12 +118,12 @@ const CartSidebarModal = () => {
                 View Cart
               </Link>
 
-              <Link
-                href="/checkout"
+              <button
+                onClick={handleCheckout}
                 className="w-full flex justify-center font-medium text-white bg-dark py-[13px] px-6 rounded-md ease-out duration-200 hover:bg-opacity-95"
               >
                 Checkout
-              </Link>
+              </button>
             </div>
           </div>
         </div>

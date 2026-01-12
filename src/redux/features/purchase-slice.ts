@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type BuyNowPayload = {
-  type: "BUY_NOW" | string;
+export type BuyNowPayload = {
+  type: "BUY_NOW" | "CART";
   id: string;
   title: string;
   price: number;
