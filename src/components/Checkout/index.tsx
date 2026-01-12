@@ -13,7 +13,7 @@ import { useUserInfo } from "@/utils/hooks/user";
 import { useOrderMutations } from "@/utils/hooks/order";
 import { CreateOrderPayload } from "@/utils/services/order.service";
 import { useDispatch } from "react-redux";
-import { clearBuyNow } from "@/redux/features/purchase-slice";
+import { clearCheckout } from "@/redux/features/purchase-slice";
 import MailSuccess from "../MailSuccess";
 
 const Checkout = () => {
@@ -27,15 +27,18 @@ const Checkout = () => {
 
   const [paymentMethod, setPaymentMethod] = useState<"BANK" | "COD" | "PAYPAL">("COD");
 
-  const buyNowFromRedux = useAppSelector((s) => s.purchaseReducer.buyNow);
+  const buyNowFromRedux = useAppSelector((s) => s.purchaseReducer.checkout);
 
   const [buyNow, setBuyNow] = useState({
+    items:[{
     id: "",
     title: "",
     price: 0,
     discountedPrice: 0,
     quantity: 0,
     image: ""
+  }],
+  totalPrice: 0
   });
 
   const handleAddressSelect = (address: any) => {
@@ -46,22 +49,26 @@ const Checkout = () => {
   useEffect(() => {
     const buyNow =
       buyNowFromRedux ||
-      JSON.parse(localStorage.getItem("buy_now") || "null");
+      JSON.parse(localStorage.getItem("checkout") || "null");
 
     if (!buyNow) {
       router.push("/");
     } else {
-      setBuyNow(buyNow);
+      const totalPrice = buyNow.reduce(
+          (total, item) => total + item.discountedPrice * item.quantity,
+          0
+        );
+      setBuyNow((prev)=>({...prev, items: buyNow, totalPrice}));
     }
   }, [])
 
   const handleCheckout = () => {
 
     let orderData: CreateOrderPayload = {
-      items: [{
-        productId: buyNow.id,
-        quantity: buyNow.quantity
-      }],
+      items: buyNow?.items?.map(item=>({
+        productId: item.id,
+        quantity: item.quantity
+      })),
       shippingAddress: selectedAddress,
       paymentMethod
     };
@@ -71,8 +78,8 @@ const Checkout = () => {
         console.log('error==>', e)
       },
       onSuccess: (e: any) => {
-        localStorage.removeItem('buy_now');
-        dispatch(clearBuyNow());
+        localStorage.removeItem('checkout');
+        dispatch(clearCheckout());
         setOrderCreated(true);
 
         setTimeout(() => {
@@ -164,19 +171,22 @@ const Checkout = () => {
 
                       <tbody>
                         {/* Product Row */}
-                        <tr className="border-b border-gray-3">
+                        {buyNow?.items?.map((item, i)=>(
+                          <tr className="border-b border-gray-3" key={`purchase_item_${i}`}>
                           <td className="py-5 text-dark">
-                            {buyNow?.title}
+                            {item?.title}
                           </td>
 
                           <td className="py-5 text-center text-dark">
-                            {buyNow?.quantity}
+                            {item?.quantity}
                           </td>
 
                           <td className="py-5 text-right text-dark">
-                            ₹{buyNow?.discountedPrice}
+                            ₹{item?.discountedPrice}
                           </td>
                         </tr>
+                        ))}
+                        
 
                         {/* Total Row */}
                         <tr>
@@ -187,7 +197,7 @@ const Checkout = () => {
                           <td></td>
 
                           <td className="pt-5 text-right font-medium text-lg text-dark">
-                            ₹{Number(buyNow?.discountedPrice) * Number(buyNow.quantity)}
+                            ₹{Number(buyNow?.totalPrice)}
                           </td>
                         </tr>
                       </tbody>

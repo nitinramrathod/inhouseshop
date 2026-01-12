@@ -8,29 +8,29 @@ type BuyNowPayload = {
   discountedPrice: number;
   quantity: number;
   image?: string;
-};
+}[];
 
 type PurchaseState = {
-  buyNow: BuyNowPayload | null;
+  checkout: BuyNowPayload | null;
 };
 
 const initialState: PurchaseState = {
-  buyNow: null,
+  checkout: null,
 };
 
 const purchaseSlice = createSlice({
   name: "purchase",
   initialState,
   reducers: {
-    setBuyNow: (state, action: PayloadAction<BuyNowPayload>) => {
-      state.buyNow = action.payload;
+    setCheckout: (state, action: PayloadAction<BuyNowPayload>) => {
+      state.checkout = action.payload;
     },
 
-    clearBuyNow: (state) => {
-      state.buyNow = null;
+    clearCheckout: (state) => {
+      state.checkout = null;
     },
   },
 });
 
-export const { setBuyNow, clearBuyNow } = purchaseSlice.actions;
+export const { setCheckout, clearCheckout } = purchaseSlice.actions;
 export default purchaseSlice.reducer;

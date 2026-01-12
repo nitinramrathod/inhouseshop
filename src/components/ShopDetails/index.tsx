@@ -9,7 +9,7 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import ProductSpecifications from "./ProductSpecifications";
 import { CircleCheck, Fullscreen } from "lucide-react";
 import Reviews from "../Shop/Reviews";
-import { setBuyNow } from "@/redux/features/purchase-slice";
+import { setCheckout } from "@/redux/features/purchase-slice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
@@ -63,9 +63,9 @@ const ShopDetails = ({data}:any) => {
       quantity,
     };
 
-    dispatch(setBuyNow(buyNowData));
+    dispatch(setCheckout([buyNowData]));
 
-    localStorage.setItem("buy_now", JSON.stringify(buyNowData));
+    localStorage.setItem("checkout", JSON.stringify([buyNowData]));
 
     router.push("/checkout");
   };

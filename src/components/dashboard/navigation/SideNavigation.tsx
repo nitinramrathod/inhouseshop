@@ -13,6 +13,7 @@ import {
   LogOut,
   Menu,
   Tag,
+  AppWindow,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -28,6 +29,7 @@ const navItems: NavItem[] = [
   { label: "Orders", icon: ShoppingCart, href: "/admin/orders" },
   { label: "Categories", icon: Tag, href: "/admin/categories" },
   { label: "Users", icon: Users, href: "/admin/users" },
+  { label: "Website", icon: AppWindow, href: "/" },
 ];
 
 import { useSession } from "next-auth/react"
