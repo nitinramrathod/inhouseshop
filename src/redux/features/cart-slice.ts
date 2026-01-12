@@ -5,7 +5,6 @@ import { RootState } from "../store";
 export const selectCartItems = (state: RootState) => state.cartReducer.items;
 
 export const selectTotalPrice = createSelector([selectCartItems], (items) => { 
-  console.log('====>', items) 
   return Array.isArray(items) ? items?.reduce((total, item) => {
     return total + item?.discountedPrice * item?.quantity;
   }, 0): [];  

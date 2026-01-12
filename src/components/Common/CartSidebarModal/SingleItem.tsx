@@ -2,12 +2,13 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import Image from "next/image";
+import { removeFromCart } from "@/redux/thunks/cart.thunks";
 
 const SingleItem = ({ item, removeItemFromCartLocal }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleRemoveFromCart = () => {
-    dispatch(removeItemFromCartLocal(item.id));
+    dispatch(removeFromCart(item.id));
   };
 
   return (

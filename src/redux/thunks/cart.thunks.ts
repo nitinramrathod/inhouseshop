@@ -1,5 +1,5 @@
 import { AppDispatch, RootState } from "../store";
-import { CartItem } from "../features/cart-slice";
+import { CartItem, removeItemFromCartLocal } from "../features/cart-slice";
 import {
   addItemToCartLocal,
   setCartFromBackend,
@@ -58,3 +58,21 @@ export const addToCart =
       addItemToGuestCart(item);
     }
   };
+
+  export const removeFromCart =
+  (productId: string) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+
+    dispatch(removeItemFromCartLocal(productId));
+
+    const { session } = getState().auth;
+
+    if (session) {
+      // await cartService.removeFromCart(productId);
+      console.log('Remove item from backend cart');
+    } else {
+      const cart = getGuestCart().filter(i => i.id !== productId);
+      setGuestCart(cart);
+    }
+  };
+
