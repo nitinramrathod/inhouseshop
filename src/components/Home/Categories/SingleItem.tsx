@@ -8,7 +8,7 @@ const SingleItem = ({ item }: { item: Category }) => {
     <Link href={`/products/${item?.slug}`} className="group flex flex-col items-center">
       <div className="max-w-[130px] w-full bg-[#F2F3F8] h-32.5 rounded-full flex items-center justify-center mb-4">
         {item?.image ? (<Image src={item?.image} alt="Category" width={82} height={62} />):(
-          <div className="w-[4rem] h-[4rem] rounded-lg border bg-gray-300"></div>
+          <div className="w-[4rem] h-[4rem] rounded-lg border border-blue bg-gray-200"></div>
         )}
       </div>
 
