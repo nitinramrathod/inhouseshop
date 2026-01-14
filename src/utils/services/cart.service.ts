@@ -50,8 +50,8 @@ export const cartService = {
    * Remove item from cart
    */
   removeCartItem: async (cartItemId: string) => {
-    const res = await publicAxios.delete(
-      `/api/v1/cart/items/${cartItemId}`
+    const res = await protectedAxios.delete(
+      `/api/v1/carts/remove/${cartItemId}`
     )
     return res.data
   },

@@ -32,49 +32,49 @@ const addItemToGuestCart = (item: CartItem) => {
 
 export const addToCart =
   (item: CartItem) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
+    async (dispatch: AppDispatch, getState: () => RootState) => {
 
-    // 1. Optimistic UI update
-    dispatch(addItemToCartLocal(item));
+      // 1. Optimistic UI update
+      dispatch(addItemToCartLocal(item));
 
-    const { session } = getState().auth; 
+      const { session } = getState().auth;
 
-    // 2. Logged-in user
-    if (session) {
-      try {
-        const { data } = await cartService.addToCart({
-          productId: item.id,
-          quantity: item.quantity,
-        });
+      // 2. Logged-in user
+      if (session) {
+        try {
+          const { data } = await cartService.addToCart({
+            productId: item.id,
+            quantity: item.quantity,
+          });
 
-        dispatch(setCartFromBackend(data.items));
-      } catch (error) {
-        console.error("Cart sync failed", error);
-        // OPTIONAL: rollback here
+          dispatch(setCartFromBackend(data.items));
+        } catch (error) {
+          console.error("Cart sync failed", error);
+          // OPTIONAL: rollback here
+        }
       }
-    }
-    // 3. Guest user
-    else {
-      addItemToGuestCart(item);
-    }
-  };
+      // 3. Guest user
+      else {
+        addItemToGuestCart(item);
+      }
+    };
 
-  export const removeFromCart =
+export const removeFromCart =
   (productId: string) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
+    async (dispatch: AppDispatch, getState: () => RootState) => {
 
-    dispatch(removeItemFromCartLocal(productId));
+      dispatch(removeItemFromCartLocal(productId));
 
-    const { session } = getState().auth;
+      const { session } = getState().auth;
 
-    if (session) {
-      // await cartService.removeFromCart(productId);
-      console.log('Remove item from backend cart');
-    } else {
-      const cart = getGuestCart().filter(i => i.id !== productId);
-      setGuestCart(cart);
-    }
-  };
+      if (session) {
+        await cartService.removeCartItem(productId);
+        console.log('Remove item from backend cart');
+      } else {
+        const cart = getGuestCart().filter(i => i.id !== productId);
+        setGuestCart(cart);
+      }
+    };
 
 
 //   export const clearCart =

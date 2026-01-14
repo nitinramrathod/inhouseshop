@@ -21,9 +21,7 @@ import { addToCart } from "@/redux/thunks/cart.thunks";
 
 const ProductItem = ({ item }: { item: Product }) => {
 
-  console.log('item===>', item)
   const { openModal } = useModalContext();
-  const { data: session } = useSession();
 
   const dispatch = useDispatch<AppDispatch>();
 
