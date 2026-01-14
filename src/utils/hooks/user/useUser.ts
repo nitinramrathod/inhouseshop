@@ -17,22 +17,13 @@ export const useUsers = (params?: UseUsersParams) => {
 }
 
 export const useUserInfo = () => {
+  const { data: session, status } = useSession();
 
-   const { data, status } = useSession()
-
-   if(status == 'unauthenticated'){
-    return {data:null}
-   }
-
-   const {id=null} = data?.user;
-
-   if(!id){
-    return null;
-   }
+  const userId = session?.user?.id;
 
   return useQuery({
-    queryKey: ['users', id],
-    queryFn: () => userService.getById(id),
-    // keepPreviousData: true,
-  })
-}
+    queryKey: ['users', userId],
+    queryFn: () => userService.getById(userId!),
+    enabled: status === 'authenticated' && !!userId,
+  });
+};

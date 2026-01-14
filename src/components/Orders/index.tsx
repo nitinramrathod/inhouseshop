@@ -1,20 +1,7 @@
-import React, { useEffect, useState } from "react";
+
 import SingleOrder from "./SingleOrder";
-import ordersData from "./ordersData";
 
-const Orders = ({orders}) => {
-  // const [orders, setOrders] = useState<any>([]);
-
-  // useEffect(() => {
-  //   fetch(`/api/order`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setOrders(data.orders);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.message);
-  //     });
-  // }, []);
+const Orders = ({orders}) => { 
 
   return (
     <>

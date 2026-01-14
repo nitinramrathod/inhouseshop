@@ -27,6 +27,14 @@ export const cartService = {
     return res.data
   },
 
+   /**
+   * Add item to cart
+   */
+  mergeCart: async (payload: {items: AddToCartPayload[]}) => {
+    const res = await protectedAxios.post('/api/v1/carts/merge', payload)
+    return res.data
+  },
+
   /**
    * Update cart item quantity
    */

@@ -14,8 +14,6 @@ const MyAccount = () => {
 
   const { data: orders, isPending } = useOrders({ mine: true });
 
-  console.log('orders, ==>', orders)
-
   const openAddressModal = () => {
     setAddressModal(true);
   };
@@ -28,7 +26,7 @@ const MyAccount = () => {
     <>
       <Breadcrumb title={"My Account"} pages={["my account"]} />
 
-      <section className="overflow-hidden py-20 bg-gray-2">
+      <section className="overflow-hidden py-20 pt-30 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="flex flex-col xl:flex-row gap-7.5">
             {/* <!--== user dashboard menu start ==--> */}

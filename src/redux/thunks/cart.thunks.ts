@@ -6,7 +6,7 @@ import {
 } from "../features/cart-slice";
 import { cartService } from "@/utils/services/cart.service";
 
-const getGuestCart = (): CartItem[] => {
+export const getGuestCart = (): CartItem[] => {
   if (typeof window === "undefined") return [];
   return JSON.parse(localStorage.getItem("cart") || "[]");
 };
