@@ -11,6 +11,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Star } from "lucide-react";
 import Reviews from "./Reviews";
+import { addToCart } from "@/redux/thunks/cart.thunks";
 
 const SingleGridItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
@@ -23,18 +24,31 @@ const SingleGridItem = ({ item }: { item: Product }) => {
   };
 
   // add to cart
-  const handleAddToCart = () => {
-    dispatch(
-      addItemToCartLocal({
-        ...item,
-        title: item.title,
+  // const handleAddToCart = () => {
+  //   dispatch(
+  //     addItemToCartLocal({
+  //       ...item,
+  //       title: item.title,
+  //       id: item._id,
+  //       discountedPrice: item?.discountedPrice,
+  //       image: item.images[0],
+  //       quantity: 1,
+  //     })
+  //   );
+  // };
+
+    const handleAddToCart = async () => {    
+      const cartItem = {
         id: item._id,
-        discountedPrice: item?.discountedPrice,
+        title: item.title,
+        price: item.price,
+        discountedPrice: item.discountedPrice,
         image: item.images[0],
         quantity: 1,
-      })
-    );
-  };
+      };   
+      
+      dispatch(addToCart(cartItem));
+    };
 
   const handleItemToWishList = () => {
     dispatch(

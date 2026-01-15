@@ -80,13 +80,7 @@ const Checkout = () => {
       onSuccess: (e: any) => {
 
         setOrderCreated(true);
-        localStorage.removeItem('checkout');
-        
-        if(buyNow.items[0].type == 'CART'){
-          // dispatch(removeAllItemsFromCart());
-          console.log('Clear cart from backend ==>')
-        }else{
-        }    
+        localStorage.removeItem('checkout');  
         
         dispatch(clearCheckout());
         buyNow?.items?.forEach(item=> dispatch(removeItemFromCartLocal(item.id)));

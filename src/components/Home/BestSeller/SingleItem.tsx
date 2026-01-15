@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { addItemToWishlist } from "@/redux/features/wishlist-slice";
 import Reviews from "@/components/Shop/Reviews";
+import { addToCart } from "@/redux/thunks/cart.thunks";
 
 const SingleItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
@@ -21,18 +22,31 @@ const SingleItem = ({ item }: { item: Product }) => {
   };
 
   // add to cart
-  const handleAddToCart = () => {
-    dispatch(
-      addItemToCartLocal({
-        ...item,
-        title: item.title,
-        id: item._id,
-        discountedPrice: item?.discountedPrice,
-        image: item.images[0],
+  // const handleAddToCart = () => {
+  //   dispatch(
+  //     addItemToCartLocal({
+  //       ...item,
+  //       title: item.title,
+  //       id: item._id,
+  //       discountedPrice: item?.discountedPrice,
+  //       image: item.images[0],
         
-        quantity: 1,
-      })
-    );
+  //       quantity: 1,
+  //     })
+  //   );
+  // };
+
+  const handleAddToCart = async () => {    
+    const cartItem = {
+      id: item._id,
+      title: item.title,
+      price: item.price,
+      discountedPrice: item.discountedPrice,
+      image: item.images[0],
+      quantity: 1,
+    };   
+    
+    dispatch(addToCart(cartItem));
   };
 
   const handleItemToWishList = () => {

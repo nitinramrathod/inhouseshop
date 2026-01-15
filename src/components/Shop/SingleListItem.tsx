@@ -11,6 +11,7 @@ import { AppDispatch } from "@/redux/store";
 import Link from "next/link";
 import Image from "next/image";
 import Reviews from "./Reviews";
+import { addToCart } from "@/redux/thunks/cart.thunks";
 
 const SingleListItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
@@ -21,19 +22,18 @@ const SingleListItem = ({ item }: { item: Product }) => {
     dispatch(updateQuickView({ ...item }));
   };
 
-  // add to cart
-  const handleAddToCart = () => {
-    dispatch(
-      addItemToCartLocal({
-        ...item,
-        title: item.title,
+    const handleAddToCart = async () => {    
+      const cartItem = {
         id: item._id,
-        discountedPrice: item?.discountedPrice,
+        title: item.title,
+        price: item.price,
+        discountedPrice: item.discountedPrice,
         image: item.images[0],
         quantity: 1,
-      })
-    );
-  };
+      };   
+      
+      dispatch(addToCart(cartItem));
+    };
 
   const handleItemToWishList = () => {
     dispatch(

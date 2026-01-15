@@ -1,8 +1,41 @@
+"use client"
+
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import Input from "@/components/Common/Form/Input";
+import { formatApiError } from "@/utils/formater/formatApiError";
+import { useUserMutations } from "@/utils/hooks/user";
+import { CreateUserPayload } from "@/utils/services/user.service";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 const Signup = () => {
+
+  const { register } = useUserMutations();
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const router = useRouter()
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    const data = Object.fromEntries(formData.entries()) as CreateUserPayload;
+
+    register.mutate(data, {
+      onError: (e: any) => {
+        setErrors(formatApiError(e).errors);
+      },
+
+      onSuccess: (data, variables, onMutateResult, context) => {
+        console.log(data);
+        router.push('/signin')
+      },
+    })
+
+    console.log(data);
+  };
+
   return (
     <>
       <Breadcrumb title={"Signup"} pages={["Signup"]} />
@@ -87,64 +120,57 @@ const Signup = () => {
             </span>
 
             <div className="mt-5.5">
-              <form>
-                <div className="mb-5">
-                  <label htmlFor="name" className="block mb-2.5">
-                    Full Name <span className="text-red">*</span>
-                  </label>
+              <form onSubmit={handleSubmit}>
 
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="Enter your full name"
-                    className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
-                  />
-                </div>
+                <Input
+                  label="First Name"
+                  required={true}
+                  type="text"
+                  name="firstName"
+                  id="firstName"
+                  placeholder="Enter your first name"
+                  error={errors.firstName}
+                />
 
-                <div className="mb-5">
-                  <label htmlFor="email" className="block mb-2.5">
-                    Email Address <span className="text-red">*</span>
-                  </label>
+                <Input
+                  label="Last Name"
+                  required={true}
+                  type="text"
+                  name="lastName"
+                  id="lastName"
+                  placeholder="Enter your last name"
+                  error={errors.lastName}
+                />
 
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Enter your email address"
-                    className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
-                  />
-                </div>
+                <Input
+                  label="Email Address"
+                  required={true}
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Enter your email address"
+                  error={errors.email}
+                />
 
-                <div className="mb-5">
-                  <label htmlFor="password" className="block mb-2.5">
-                    Password <span className="text-red">*</span>
-                  </label>
+                <Input
+                  label="Password"
+                  required={true}
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="Enter your password"
+                  error={errors.password}
+                />
 
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="Enter your password"
-                    autoComplete="on"
-                    className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
-                  />
-                </div>
-
-                <div className="mb-5.5">
-                  <label htmlFor="re-type-password" className="block mb-2.5">
-                    Re-type Password <span className="text-red">*</span>
-                  </label>
-
-                  <input
-                    type="password"
-                    name="re-type-password"
-                    id="re-type-password"
-                    placeholder="Re-type your password"
-                    autoComplete="on"
-                    className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
-                  />
-                </div>
+                <Input
+                  label="Confirm Password"
+                  required={true}
+                  type="password"
+                  name="confirm_password"
+                  id="confirm_password"
+                  placeholder="Confirm your password"
+                  error={errors.password}
+                />
 
                 <button
                   type="submit"
