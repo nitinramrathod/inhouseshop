@@ -11,6 +11,7 @@ import { resetQuickView } from "@/redux/features/quickView-slice";
 import { updateproductDetails } from "@/redux/features/product-details";
 import { check_icon, cross_icon, heart_icon, minuse_icon, pluse_icon, preview_icon } from "@/assets/icons/common";
 import Rating from "./Rating";
+import { addToCart } from "@/redux/thunks/cart.thunks";
 
 const QuickViewModal = () => {
   const { isModalOpen, closeModal } = useModalContext();
@@ -32,20 +33,34 @@ const QuickViewModal = () => {
   };
 
   // add to cart
-  const handleAddToCart = () => {
-    dispatch(
-      addItemToCartLocal({
-        ...product,
-        title: product.name,
-        id: product._id,
-        discountedPrice: product?.discountPrice,
-        image: product.images[0],
-        quantity,
-      })
-    );
+  // const handleAddToCart = () => {
+  //   dispatch(
+  //     addItemToCartLocal({
+  //       ...product,
+  //       title: product.name,
+  //       id: product._id,
+  //       discountedPrice: product?.discountPrice,
+  //       image: product.images[0],
+  //       quantity,
+  //     })
+  //   );
+  //   closeModal();
+  // };
 
+  const handleAddToCart = async () => {
+    const cartItem = {
+      id: product._id,
+      title: product.title,
+      price: product.price,
+      discountedPrice: product.discountedPrice,
+      image: product.images[0],
+      quantity,
+    };
+
+    dispatch(addToCart(cartItem));
     closeModal();
   };
+
 
   useEffect(() => {
     // closing modal while clicking outside
@@ -68,9 +83,8 @@ const QuickViewModal = () => {
 
   return (
     <div
-      className={`${
-        isModalOpen ? "z-99999" : "hidden"
-      } fixed top-0 left-0 overflow-y-auto no-scrollbar w-full h-screen sm:py-20 xl:py-25 2xl:py-[230px] bg-dark/70 sm:px-8 px-4 py-5`}
+      className={`${isModalOpen ? "z-99999" : "hidden"
+        } fixed top-0 left-0 overflow-y-auto no-scrollbar w-full h-screen sm:py-20 xl:py-25 2xl:py-[230px] bg-dark/70 sm:px-8 px-4 py-5`}
     >
       <div className="flex items-center justify-center ">
         <div className="w-full max-w-[1100px] rounded-xl shadow-3 bg-white p-7.5 relative modal-content">
@@ -90,9 +104,8 @@ const QuickViewModal = () => {
                     <button
                       onClick={() => setActivePreview(key)}
                       key={key}
-                      className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${
-                        activePreview === key && "border-2 border-blue"
-                      }`}
+                      className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && "border-2 border-blue"
+                        }`}
                     >
                       <Image
                         src={img || ""}
@@ -112,7 +125,7 @@ const QuickViewModal = () => {
                       aria-label="button for zoom"
                       className="gallery__Image w-10 h-10 rounded-[5px] bg-white shadow-1 flex items-center justify-center ease-out duration-200 text-dark hover:text-blue absolute top-4 lg:top-8 right-4 lg:right-8 z-50"
                     >
-                     {preview_icon}
+                      {preview_icon}
                     </button>
 
                     <Image
@@ -244,7 +257,7 @@ const QuickViewModal = () => {
                       </defs>
                     </svg>
                   </div> */}
-                  <Rating rating={product?.rating}/>
+                  <Rating rating={product?.rating} />
 
                   <span>
                     <span className="font-medium text-dark"> {product?.rating} Rating </span>
@@ -252,14 +265,14 @@ const QuickViewModal = () => {
                   </span>
                 </div>
 
-               {product?.inStock && <div className="flex items-center gap-2">
-                {check_icon}
+                {product?.inStock && <div className="flex items-center gap-2">
+                  {check_icon}
                   <span className="font-medium text-dark"> In Stock </span>
                 </div>}
               </div>
 
               <p>
-              {product?.description}
+                {product?.description}
               </p>
 
               <div className="flex flex-wrap justify-between gap-5 mt-6 mb-7.5">
@@ -270,10 +283,10 @@ const QuickViewModal = () => {
 
                   <span className="flex items-center gap-2">
                     <span className="font-semibold text-dark text-xl xl:text-heading-4">
-                    ₹{product.discountedPrice}/-
+                      ₹{product.discountedPrice?.toLocaleString()}/-
                     </span>
                     <span className="font-medium text-dark-4 text-lg xl:text-2xl line-through">
-                    ₹{product.price}/-
+                      ₹{product.price?.toLocaleString()}/-
                     </span>
                   </span>
                 </div>
@@ -290,7 +303,7 @@ const QuickViewModal = () => {
                       className="flex items-center justify-center w-10 h-10 rounded-[5px] bg-gray-2 text-dark ease-out duration-200 hover:text-blue"
                       disabled={quantity < 0 && true}
                     >
-                     {minuse_icon}
+                      {minuse_icon}
                     </button>
 
                     <span
@@ -324,7 +337,7 @@ const QuickViewModal = () => {
                 <button
                   className={`inline-flex items-center gap-2 font-medium text-white bg-dark py-3 px-6 rounded-md ease-out duration-200 hover:bg-opacity-95 `}
                 >
-                 {heart_icon}
+                  {heart_icon}
                   Add to Wishlist
                 </button>
               </div>

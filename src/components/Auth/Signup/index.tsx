@@ -22,6 +22,13 @@ const Signup = () => {
 
     const data = Object.fromEntries(formData.entries()) as CreateUserPayload;
 
+    if(data.password !== data?.confirm_password){
+      setErrors((prev=>({...prev, confirm_password: 'Password not matched'})))
+      return;
+    }else{
+      setErrors((prev=>({...prev, confirm_password: null})))
+    }
+
     register.mutate(data, {
       onError: (e: any) => {
         setErrors(formatApiError(e).errors);
@@ -169,7 +176,7 @@ const Signup = () => {
                   name="confirm_password"
                   id="confirm_password"
                   placeholder="Confirm your password"
-                  error={errors.password}
+                  error={errors.confirm_password}
                 />
 
                 <button

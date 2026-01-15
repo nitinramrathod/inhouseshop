@@ -26,7 +26,7 @@ export type ReviewQueryParams = {
 }
 
 export type CreateReviewPayload = {
-  product_id: string
+  product: string
   rating: number
   comment?: string
 }

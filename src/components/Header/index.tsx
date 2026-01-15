@@ -270,7 +270,7 @@ const Header = () => {
                       cart
                     </span>
                     <p className="font-medium text-custom-sm text-dark">
-                      ₹{totalPrice}
+                      ₹{totalPrice?.toLocaleString()}
                     </p>
                   </div>
                 </button>

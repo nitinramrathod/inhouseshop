@@ -117,7 +117,7 @@ const ProductList = () => {
                                 <td>
                                     <div>
                                         <p>Price: {item.price || '--'}</p>
-                                        <p>Discount Price: {item.discountPrice || '--'}</p>
+                                        <p>Discount Price: {item.discountedPrice || '--'}</p>
                                     </div>
                                 </td>
                                 <td>{item.sku || '--'}</td>

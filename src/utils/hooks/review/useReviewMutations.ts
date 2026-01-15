@@ -14,7 +14,7 @@ export const useReviewMutation = () => {
       reviewService.create(payload),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ['reviews', variables.product_id],
+        queryKey: ['reviews', variables.product],
       })
       queryClient.invalidateQueries({
         queryKey: ['my-reviews'],

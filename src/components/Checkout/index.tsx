@@ -183,7 +183,7 @@ const Checkout = () => {
                           </td>
 
                           <td className="py-5 text-right text-dark">
-                            ₹{item?.discountedPrice}
+                            ₹{item?.discountedPrice?.toLocaleString()}
                           </td>
                         </tr>
                         ))}
@@ -198,7 +198,7 @@ const Checkout = () => {
                           <td></td>
 
                           <td className="pt-5 text-right font-medium text-lg text-dark">
-                            ₹{Number(buyNow?.totalPrice)}
+                            ₹{Number(buyNow?.totalPrice?.toLocaleString())}
                           </td>
                         </tr>
                       </tbody>

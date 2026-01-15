@@ -28,6 +28,7 @@ export type CreateUserPayload = {
   lastName: string
   email: string
   password: string
+  confirm_password?: string
 }
 
 export type ChangePasswordPayload = {

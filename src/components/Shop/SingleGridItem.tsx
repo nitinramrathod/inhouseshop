@@ -23,20 +23,6 @@ const SingleGridItem = ({ item }: { item: Product }) => {
     dispatch(updateQuickView({ ...item }));
   };
 
-  // add to cart
-  // const handleAddToCart = () => {
-  //   dispatch(
-  //     addItemToCartLocal({
-  //       ...item,
-  //       title: item.title,
-  //       id: item._id,
-  //       discountedPrice: item?.discountedPrice,
-  //       image: item.images[0],
-  //       quantity: 1,
-  //     })
-  //   );
-  // };
-
     const handleAddToCart = async () => {    
       const cartItem = {
         id: item._id,
@@ -60,7 +46,6 @@ const SingleGridItem = ({ item }: { item: Product }) => {
     );
   };
 
-  console.log('item==>', item)
 
   return (
     <div className="group">
@@ -134,28 +119,13 @@ const SingleGridItem = ({ item }: { item: Product }) => {
 
       <Reviews averageRating={item.averageRating} reviewCount={item.reviewCount}/>
 
-      {/* <div className="flex items-center gap-2.5 mb-2">
-        <div className="flex items-center gap-1">
-          {
-            Array.from({ length: 5 }).map((_, i) => {
-              const isField = i < item.averageRating;
-              return (
-                <Star strokeWidth={2.75} key={`review_${i}`} size={'1rem'} className={isField ? "text-yellow" :"text-gray-400" } />
-              )
-            })
-          }  
-        </div>
-
-        {item.reviewCount > 0 && <p className="text-custom-sm">( {item.reviewCount} )</p>}
-      </div> */}
-
       <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
         <Link href={`/products/laptop/${item._id}`}> {item.title} </Link>
       </h3>
 
       <span className="flex items-center gap-2 font-medium text-lg">
-        <span className="text-dark">${item.discountedPrice || item.price}</span>
-        <span className="text-dark-4 line-through">${item.price}</span>
+        <span className="text-dark">₹{item?.discountedPrice?.toLocaleString() || item?.price?.toLocaleString()}</span>
+        <span className="text-dark-4 line-through">₹{item?.price?.toLocaleString()}</span>
       </span>
     </div>
   );

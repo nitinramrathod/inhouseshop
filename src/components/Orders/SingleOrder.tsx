@@ -112,7 +112,7 @@ const SingleOrder = ({ orderItem, smallView }: any) => {
             <div className="">
               <p className="text-custom-sm text-dark">
                 <span className="font-bold pr-2">Total:</span> ₹
-                {orderItem?.totalAmount}
+                {orderItem?.totalAmount?.toLocaleString()}
               </p>
             </div>
 
