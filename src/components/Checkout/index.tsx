@@ -15,7 +15,7 @@ import { CreateOrderPayload } from "@/utils/services/order.service";
 import { useDispatch } from "react-redux";
 import { clearCheckout } from "@/redux/features/purchase-slice";
 import MailSuccess from "../MailSuccess";
-import { removeAllItemsFromCart } from "@/redux/features/cart-slice";
+import { removeAllItemsFromCart, removeItemFromCartLocal } from "@/redux/features/cart-slice";
 
 const Checkout = () => {
   const router = useRouter();
@@ -83,11 +83,13 @@ const Checkout = () => {
         localStorage.removeItem('checkout');
         
         if(buyNow.items[0].type == 'CART'){
-          dispatch(removeAllItemsFromCart());
+          // dispatch(removeAllItemsFromCart());
           console.log('Clear cart from backend ==>')
         }else{
-          dispatch(clearCheckout());
-        }      
+        }    
+        
+        dispatch(clearCheckout());
+        buyNow?.items?.forEach(item=> dispatch(removeItemFromCartLocal(item.id)));
 
         setTimeout(() => {
           setOrderCreated(false)
