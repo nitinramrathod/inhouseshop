@@ -1,17 +1,16 @@
 "use client"
 import DataTable from "@/components/dashboard/table/DataTable";
-import { LaptopSpecs } from "@/types/product";
 import { Pencil, Trash } from "lucide-react";
 import PageHeader from "@/components/dashboard/table/PageHeader";
 import RowLoader from "@/components/dashboard/table/RowLoader";
 import { useCategories, useCategoryMutations } from "@/utils/hooks/category";
 import { formatDateTime } from "@/utils/helper/formatDateTime";
 import Link from "next/link";
-
+import { useBanners } from "@/utils/hooks/banner/useBannerQueries";
 
 
 const HeroBannerList = () => {
-    const { data, refetch, isPending } = useCategories();
+    const { data, refetch, isPending } = useBanners();
     const {deleteCategory}= useCategoryMutations();
 
     const handleDelete = async (id:string) => {
@@ -29,7 +28,7 @@ const HeroBannerList = () => {
 
     return (
         <div className="mx-auto px-4">
-            <PageHeader href="/admin/hero-banners/create" title="Hero Banner List" buttonText="Add Hero Banner" />
+            <PageHeader href="/admin/banners/create" title="Banner List" buttonText="Add Hero Banner" />
             <div className="overflow-x-auto">
                 <DataTable headers={HEADERS}>
                     {isPending ? <RowLoader rows={15} cols={HEADERS.length} /> : data?.map(item => {
@@ -37,16 +36,29 @@ const HeroBannerList = () => {
                             <tr key={item._id}>
                                 <td className="px-6 py-4">
                                     <div className="font-medium text-slate-900">
-                                        {item.name}
+                                        {item.title}
                                     </div>
                                     <div className="text-xs text-slate-500">
-                                        ID: {item._id}
+                                        Sub Title: {item.subtitle}
                                     </div>
                                 </td>
 
                                 {/* Slug */}
                                 <td className="px-6 py-4 text-slate-600 lowercase">
-                                    {item.slug}
+
+                                    <div className="flex">
+                                        {item.image && <img title={item.title} width={100} height={100} src={item.image}></img>}
+                                        <div>
+                                               <div className="font-medium text-slate-900">
+                                        {item.type}
+                                    </div>
+                                    <div className="text-xs text-slate-500">
+                                        {item.position}
+                                    </div>
+
+                                        </div>
+                                    </div>
+                                 
                                 </td>
 
                                 {/* Status */}
@@ -63,12 +75,17 @@ const HeroBannerList = () => {
 
                                 {/* Created At */}
                                 <td className="px-6 py-4 text-slate-600">
-                                    {formatDateTime(item.createdAt)}
+                                    <p>
+                                        Start: {item.startAt ? formatDateTime(item.startAt): "--"}
+                                    </p>
+                                    <p>
+                                        End: {item.endAt ? formatDateTime(item.endAt) : "--"}
+                                    </p>
                                 </td>
 
                                 <td className="px-4">
                                     <div className="flex px-4 py-3 gap-3 items-center mt-3">
-                                        <Link href={`/admin/categories/edit/${item._id}`} className="!px-2"><Pencil size={'1.2rem'} /></Link>
+                                        <Link href={`/admin/banners/edit/${item._id}`} className="!px-2"><Pencil size={'1.2rem'} /></Link>
                                         <button className="text-red" onClick={() => handleDelete(item._id)}><Trash size={'1.2rem'} /></button>
                                     </div>
                                 </td>

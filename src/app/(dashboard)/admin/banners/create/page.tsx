@@ -1,4 +1,4 @@
-import HeroBannerDetail from "@/components/dashboard/HeroBanner/CategoryDetail";
+import HeroBannerDetail from "@/components/dashboard/Banner/BannerDetail";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
