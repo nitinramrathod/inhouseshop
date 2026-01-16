@@ -29,6 +29,7 @@ const navItems: NavItem[] = [
   { label: "Orders", icon: ShoppingCart, href: "/admin/orders" },
   { label: "Categories", icon: Tag, href: "/admin/categories" },
   { label: "Users", icon: Users, href: "/admin/users" },
+  { label: "Hero Banner", icon: Users, href: "/admin/hero-banners" },
   { label: "Website", icon: AppWindow, href: "/" },
 ];
 
