@@ -14,6 +14,7 @@ import {
   Menu,
   Tag,
   AppWindow,
+  SlidersHorizontal,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -29,7 +30,7 @@ const navItems: NavItem[] = [
   { label: "Orders", icon: ShoppingCart, href: "/admin/orders" },
   { label: "Categories", icon: Tag, href: "/admin/categories" },
   { label: "Users", icon: Users, href: "/admin/users" },
-  { label: "Hero Banner", icon: Users, href: "/admin/hero-banners" },
+  { label: "Banner", icon: SlidersHorizontal, href: "/admin/banners" },
   { label: "Website", icon: AppWindow, href: "/" },
 ];
 

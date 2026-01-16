@@ -8,6 +8,7 @@ import { MoveLeft } from 'lucide-react'
 import Select from '../forms/Select'
 import { useBannerMutations } from '@/utils/hooks/banner/useBannerMutations'
 import { BannerPayload } from '@/utils/services/banner.service'
+import { useGetProducts } from '@/utils/hooks/product'
 
 
 const types = [
@@ -47,9 +48,12 @@ const BANNER_POSITION_OPTIONS = [
     },
 ];
 
-const HeroBannerDetail = ({ data }: any) => {
+const BannerDetail = ({ data }: any) => {
     const router = useRouter()
-    const { createBanner, updateBanner } = useBannerMutations()
+    const { createBanner, updateBanner } = useBannerMutations();
+    const {data:products} = useGetProducts();
+
+    console.log('products', products)
 
     const [isEdit, setIsEdit] = useState(false)
 
@@ -108,6 +112,13 @@ const HeroBannerDetail = ({ data }: any) => {
             }
         })
 
+        const sliderMeta = {
+            product: form?.product,
+            discountPercentage: form?.discountPercentage
+        }
+
+        formData.append('sliderMeta', JSON.stringify(sliderMeta) )
+
         if (isEdit) {
             updateBanner.mutate({ bannerId: data?._id, payload: formData }, {
                 onSuccess: () => router.push('/admin/banners'),
@@ -131,6 +142,10 @@ const HeroBannerDetail = ({ data }: any) => {
             ...prev,
             [name]: files[0], // store single File
         }))
+    }
+
+    const optionMaker = (data)=>{
+        return data?.map(item=>({label: `${item.title} - ${item._id}`, value: item._id}))
     }
 
 
@@ -176,6 +191,14 @@ const HeroBannerDetail = ({ data }: any) => {
                     name='position'
                     options={BANNER_POSITION_OPTIONS}
                 />
+                 <Select
+                    value={form.product}
+                    onChange={handleChange}
+                    id="product"
+                    label="Select Product"
+                    name='product'
+                    options={optionMaker(products)}
+                />
 
                 <Input
                     label='Image'
@@ -220,7 +243,7 @@ const HeroBannerDetail = ({ data }: any) => {
                     placeholder="e.g. gaming-laptops"
                 />
 
-                <div className="flex items-center gap-3 mt-6">
+                {/* <div className="flex items-center gap-3 mt-6">
                     <input
                         type="checkbox"
                         id="isActive"
@@ -232,9 +255,9 @@ const HeroBannerDetail = ({ data }: any) => {
                     <label htmlFor="isActive" className="font-medium">
                         Active Category
                     </label>
-                </div>
+                </div> */}
 
-                <div className='mt-6'>
+                <div className='mt-8'>
                     <Button type='submit'>
                         {isEdit ? 'Update Category' : 'Create Category'}
                     </Button>
@@ -245,4 +268,4 @@ const HeroBannerDetail = ({ data }: any) => {
     )
 }
 
-export default HeroBannerDetail
+export default BannerDetail

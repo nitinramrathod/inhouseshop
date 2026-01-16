@@ -6,7 +6,9 @@ import { serverFetch } from "@/utils/helper/serverFetch";
 
 const Hero = async () => {
 
-  const banners: any[] = await serverFetch(`/api/v1/banners`, { requireAuth: false });
+  const banners: any[] = await serverFetch(`/api/v1/banners/active`, { requireAuth: false });
+
+  console.log('banners==>', banners)
 
   const heroRightBanners = banners.filter(i => i.position == 'HOME_TOP_RIGHT_TOP' || i.position == 'HOME_TOP_RIGHT_BOTTOM').slice(0, 2);
   const heroLeftBanners = banners.filter(i => i.position == 'HOME_TOP_LEFT_SLIDER');
@@ -37,7 +39,7 @@ const Hero = async () => {
                 <div key={item?._id} className="w-full relative rounded-[10px] bg-white p-4 sm:p-7.5">
                   <div className="flex items-center gap-14">
                     <div>
-                      <h2 className="max-w-[153px] font-semibold text-dark text-xl mb-20">
+                      <h2 className="max-w-[153px] font-semibold text-dark text-xl mb-18">
                         <a href={item?.redirectUrl}> {item?.title || "--"} </a>
                       </h2>
 
