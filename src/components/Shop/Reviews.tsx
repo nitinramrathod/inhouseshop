@@ -9,7 +9,7 @@ const Reviews = ({ averageRating, reviewCount }) => {
                     Array.from({ length: 5 }).map((_, i) => {
                         const isField = i < Math.round(averageRating);
                         return (
-                            <Star strokeWidth={2.75} key={`review_${i}`} size={'1rem'} className={isField ? "text-yellow fill-yellow" : "text-gray-400"} />
+                            <Star strokeWidth={2.75} key={`review_${i}`} size={'1rem'} className={isField ? "text-yellow fill-yellow" : "text-yellow-400"} />
                         )
                     })
                 }

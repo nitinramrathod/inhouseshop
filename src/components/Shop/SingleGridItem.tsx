@@ -120,7 +120,7 @@ const SingleGridItem = ({ item }: { item: Product }) => {
       <Reviews averageRating={item.averageRating} reviewCount={item.reviewCount}/>
 
       <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
-        <Link href={`/products/laptop/${item._id}`}> {item.title} </Link>
+        <Link href={`/products/laptop/${item.slug || ''}`}> {item.title} </Link>
       </h3>
 
       <span className="flex items-center gap-2 font-medium text-lg">

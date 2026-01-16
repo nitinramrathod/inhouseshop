@@ -12,9 +12,8 @@ import { AppDispatch } from "@/redux/store";
 import Link from "next/link";
 import Rating from "./Rating";
 import { eye_icon, while_heart_icon } from "@/assets/icons/common";
-import { cartService } from "@/utils/services/cart.service";
-import { useSession } from "next-auth/react";
 import { addToCart } from "@/redux/thunks/cart.thunks";
+import Reviews from "../Shop/Reviews";
 
 
 
@@ -97,15 +96,14 @@ const ProductItem = ({ item }: { item: Product }) => {
       </div>
 
       <div className="flex items-center gap-2.5 mb-2">
-        {/* <Rating rating={item?.rating}/>
-        <p className="text-custom-sm">({item.reviews})</p> */}
+        <Reviews averageRating={item.averageRating} reviewCount={item.reviewCount} />
       </div>
 
       <h3
         className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5"
         onClick={() => handleProductDetails()}
       >
-        <Link href={`/products/laptop/${item._id}`}> {item.title} </Link>
+        <Link href={`/products/laptop/${item.slug || ''}`}> {item.title} </Link>
       </h3>
 
       <span className="flex items-center gap-2 font-medium text-lg">

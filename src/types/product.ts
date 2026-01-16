@@ -11,6 +11,7 @@ export interface LaptopSpecs {
 
 export type Product = {
   title: string;
+  slug?: string;
   _id?: string;
   name?: string;
   description?: string;
