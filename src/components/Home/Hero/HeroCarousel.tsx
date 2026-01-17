@@ -24,12 +24,12 @@ const HeroCarousal = ({slides}) => {
       className="hero-carousel"
     >
       {slides && slides?.map(item=>(
-        <SwiperSlide key={item?._id}>
+        <SwiperSlide key={`${item?._id}_slider`}>
         <div className="flex items-center pt-6 sm:pt-0 flex-col-reverse sm:flex-row">
           <div className="max-w-[394px] py-10 sm:py-15 lg:py-24.5 pl-4 sm:pl-7.5 lg:pl-12.5">
             <div className="flex items-center gap-4 mb-7.5 sm:mb-10">
               <span className="block font-semibold text-heading-3 sm:text-heading-1 text-blue">
-                {item?.discountPercentage || 0}%
+                {item?.sliderMeta?.discountPercentage || 0}%
               </span>
               <span className="block text-dark text-sm sm:text-custom-1 sm:leading-[24px]">
                 Sale
